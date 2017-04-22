@@ -1,0 +1,3 @@
+[submodule "Assets/Others/isometra-dialog-system"]
+	path = Assets/Others/isometra-dialog-system
+	url = https://github.com/gorco/isometra-dialog-system

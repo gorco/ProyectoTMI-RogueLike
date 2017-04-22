@@ -1,0 +1,113 @@
+﻿{
+	"npc":{
+		"root":{
+			"type": "fork",
+			"options": [
+			{
+				"next": "completeQuest",
+				"condition": "varObject('state', 'BlueClicks') >= 2 || varObject('state', 'RedClicks') >= 4"
+			},
+			{
+				"next": "rememberBlue",
+				"condition": "varObject('state', 'BlueQuest') == true && varObject('state', 'RedQuest') == false"
+			},
+			{
+				"next": "rememberRed",
+				"condition": "varObject('state', 'RedQuest') == true && varObject('state', 'BlueQuest') == false"
+			},
+			{
+				"next": "giveQuest",
+				"condition": "varObject('state', 'BlueClicks') < 2 && varObject('state', 'RedClicks') < 4"
+			}]		
+		},
+		"rememberBlue": {
+			"type": "dialog",
+			"next": "quest1",
+			"fragments": [{
+				"tag": "NPC",
+				"msn": "Recuerda tu mision"
+			}]
+		},
+		"rememberRed": {
+			"type": "dialog",
+			"next": "quest2",
+			"fragments": [{
+				"tag": "NPC",
+				"msn": "Recuerda tu mision"
+			}]
+		},
+		"completeQuest": {
+			"type": "dialog",
+			"fragments": [{
+				"tag": "NPC",
+				"msn": "Enhorabuena, has completado tu mision"
+			}]
+		},
+		"giveQuest": {
+			"type": "event",
+			"next": "quest",
+			"event": {
+				"name": "generate random",
+				"var": "RandomNum"
+			}
+		},
+		"quest":{
+			"type": "fork",
+			"options": [{
+				"next": "quest1",
+				"condition": "varObject('global', 'RandomNumStatic') >= 50"
+			},
+			{
+				"next": "quest2",
+				"condition": "varObject('global', 'RandomNumStatic') <= 50"
+			}]		
+		},
+		"quest1": {
+			"type": "dialog",
+			"next": "activeBlue",
+			"fragments": [{
+				"tag": "NPC",
+				"msn": "Haz click sobre 2 enemigos azules"
+			}]
+		},
+		"quest2": {
+			"type": "dialog",
+			"next": "activeRed",
+			"fragments": [{
+				"tag": "NPC",
+				"msn": "Haz click sobre 4 enemigos rojos"
+			}]
+		},
+		"activeBlue": {
+			"type": "event",
+			"event": {
+				"name": "active quest",
+				"var": "BlueQuest"
+			}
+		},
+		"activeRed": {
+			"type": "event",
+			"event": {
+				"name": "active quest",
+				"var": "RedQuest"
+			}
+		},
+	},
+	"npc2":{
+		"root": {
+			"type": "dialog",
+			"fragments": [{
+				"tag": "Cuentacuentos",
+				"msn": "¿Quieres que te cuenta un cuento?"
+			},
+			{
+				"tag": "Cuentacuentos",
+				"msn": "Había una vez..."
+			},
+			{
+				"tag": "Cuentacuentos",
+				"msn": "(bostezo) tengo sueño, vete a molestar al otro NPC"
+			}]
+		}
+	}
+}
