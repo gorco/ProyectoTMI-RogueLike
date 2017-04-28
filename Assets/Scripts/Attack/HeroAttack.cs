@@ -22,8 +22,8 @@ public class HeroAttack : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		
-	}
+        
+    }
 
     void OnTriggerEnter2D(Collider2D other)
     {
@@ -39,6 +39,9 @@ public class HeroAttack : MonoBehaviour {
         {
             if (Input.GetButtonDown("Fire1"))
             {
+                Debug.Log("Vamos");
+                campoAtaque.transform.Rotate(Vector3.back*Time.deltaTime*2, 45);
+                Debug.Log("Hecho el ataque");
                 lifeE.life -= danioHero;
                 Debug.Log("He hecho daño. Ahora tiene "+ lifeE.life);
 

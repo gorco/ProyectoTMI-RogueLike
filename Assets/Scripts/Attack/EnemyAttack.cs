@@ -25,7 +25,7 @@ public class EnemyAttack : MonoBehaviour {
     {
         if (collision.CompareTag("HeroImage"))
         {
-            Debug.Log("Voy a por ti");
+            
             timeAttack += Time.deltaTime;
             if (timeAttack >= 1.5)
             {
