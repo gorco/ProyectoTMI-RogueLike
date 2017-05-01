@@ -23,7 +23,9 @@ public class DungeonLevel : MonoBehaviour {
    // public RoomTree<string, GameObject> doorMap;
     bool loadLevel = false;
     public GameObject[] doors = new GameObject[4];
-
+    GameObject room;
+    int p;
+    string nameofroom;
 
     public Room Actual
     {
@@ -35,6 +37,61 @@ public class DungeonLevel : MonoBehaviour {
             {
             actual = value;
         }
+    }
+
+    public void refreshRoom(int place, string name)
+    {
+        p = place;
+        nameofroom = name;
+       switch(place)
+        {
+            case 0:
+                p = 2;
+                break;
+            case 1:
+                p = 3;
+                break;
+            case 2:
+                p = 0;
+                break;
+            case 3:
+                p = 1;
+                break;
+        }
+
+        //borro las puertas que había
+        foreach(GameObject g in GameObject.FindGameObjectsWithTag("Door"))
+            DestroyImmediate(g);
+        Room newRoom = (Room)map[nameofroom];
+        actual = newRoom;
+        actual.name = "room_" + map.Count;
+        actual.n_enemies = 0;
+
+        gameObject.GetComponent<RoomLevel>().spawnDoors();//cargo las puertas de nuevo
+        Transform newPlayerPos = null;
+        foreach (GameObject g in GameObject.FindGameObjectsWithTag("Door"))
+        {
+            if (g.GetComponent<Door>().place.Equals(p))
+                newPlayerPos = g.transform;
+        }
+        switch (p)
+        {
+            case 0:
+                newPlayerPos.position = new Vector2(newPlayerPos.position.x, newPlayerPos.position.y - 20);
+                break;
+            case 1:
+                newPlayerPos.position = new Vector2(newPlayerPos.position.x - 20, newPlayerPos.position.y);
+                break;
+            case 2:
+                newPlayerPos.position = new Vector2(newPlayerPos.position.x, newPlayerPos.position.y + 20);
+                break;
+            case 3:
+                newPlayerPos.position = new Vector2(newPlayerPos.position.x + 20, newPlayerPos.position.y);
+                break;
+        }
+       
+        GameObject.FindGameObjectWithTag("Player").transform.position = newPlayerPos.position;
+
     }
 
     // Use this for initialization
@@ -104,12 +161,11 @@ public class DungeonLevel : MonoBehaviour {
 	void Update () {
         if (loadLevel)
         {
-  //          refreshRoom();
+  //         aqui hago el spawn de puertas
             gameObject.GetComponent<RoomLevel>().spawnDoors();
             loadLevel = !loadLevel;
         }
-    //    if (actual != gameObject.GetComponent<RoomLevel>())
-      //      refreshRoom();
+ 
             
 	}
 
