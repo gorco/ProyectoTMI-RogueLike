@@ -8,6 +8,7 @@ public class Door : MonoBehaviour {
     public int next_room;
     public bool closed;
     public bool exist;
+    public int place;
 
 	// Use this for initialization
 	void Start () {
@@ -28,11 +29,14 @@ public class Door : MonoBehaviour {
     }
         
     }
+
     void OnTriggerEnter2D(Collider2D coll)
     {
+        Debug.Log("Entra player");
         if (coll.CompareTag("Player"))
         {
-            //GameObject.FindGameObjectWithTag("Room").GetComponent<DungeonLevel>().changeRoom(next_room,nameofnextroom);
+            
+            GameObject.FindGameObjectWithTag("Room").GetComponent<DungeonLevel>().refreshRoom(place, nameofnextroom);
         }
     }
 	// Update is called once per frame

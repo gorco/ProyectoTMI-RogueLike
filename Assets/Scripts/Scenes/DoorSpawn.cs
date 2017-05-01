@@ -7,6 +7,7 @@ public class DoorSpawn : MonoBehaviour {
 
     int count;
     int previousPoint = 0;
+    int[] place = new int[4];
     public Transform[] spawnLocations;
     [SerializeField]
     GameObject prefab;
@@ -23,7 +24,7 @@ public class DoorSpawn : MonoBehaviour {
 
     internal void selectDoor(int num_doors)
     {
-
+        //inicializo las habitaciones libres sin puerta
         for(int g = 0; g < level.map.Count; g++)
         {
             ocupadas[g] = false;
@@ -42,13 +43,12 @@ public class DoorSpawn : MonoBehaviour {
             }
 
             Debug.Log(n.ToString());
+            place[i] = n;
             prefab = Instantiate(prefab, spawnLocations[n].transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;
             spawns[n] = true;
             if (level == null)
                 level = gameObject.GetComponent<DungeonLevel>();
-            level.doors[i] = prefab;
-        //    level.doorMap[level.Actual.name] = prefab;
-          //  level.doors[n] = prefab;
+            level.doors[i] = prefab;//añadimos puerta al nivel
             count++;
         }
         int[] aux = new int[level.doors.Length];
@@ -63,33 +63,14 @@ public class DoorSpawn : MonoBehaviour {
         {
             System.Random r = new System.Random();
             int n = r.Next(level.map.Count);
-            /*if (previousPoint == n || n == level.Actual.number)
-            {
-                if (n + 1 < level.map.Count)
-                    n = (n + 1) % level.map.Count;
-                else
-                    n = (n + -1) % level.map.Count;
-
-              /*  foreach (int j in aux)
-                {
-                    if(j== n)
-                    {
-                        if (n + 2 < level.map.Count)
-                            n = (n + 2) % level.map.Count;
-                        else
-                            n = (n + -2) % level.map.Count;
-                    }
-                }*/
-            /*previousPoint = n;
-            aux[i] = n;
-
-        }*/
+         
             if ((bool)ocupadas[n] == true)
                 n = choosePosition(n);
             //Debug.Log(level.doors[i].GetComponent<Door>());
             ocupadas[n] = true;
             level.doors[i].GetComponent<Door>().nameofnextroom = "room_" + n;
             level.doors[i].GetComponent<Door>().next_room = n;
+            level.doors[i].GetComponent<Door>().place = place[i];
         }
     }
 
