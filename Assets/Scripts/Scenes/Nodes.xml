@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+
+ <Nodos>
+
+      <Organic levelId="nivel1" n_habitacion="1"  habitaciones= "3" 
+      locked="false" used = "false" next= "nivel1" next1="Bloque0" />
+
+      <Organic levelId="nivel1" n_habitacion="2"  habitaciones= "3" 
+      locked="false" used = "false" next= "nivel1" next1="Bloque1" />   
+
+      <Organic levelId="nivel1" n_habitacion="3"  habitaciones= "3" 
+      locked="true" used = "false" next= "nivel2" next1="Bloque2" /> 
+   
+   
+  
+
+</Nodos>
