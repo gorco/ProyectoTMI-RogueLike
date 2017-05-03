@@ -24,7 +24,18 @@ public class HeroAttack : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        
+        if (Input.GetButtonDown("Fire1"))
+        {
+            
+            campoAtaque.transform.Rotate(new Vector3(0, 0, 30));
+           
+        }
+        if (Input.GetButtonUp("Fire1"))
+        {
+            campoAtaque.transform.Rotate(new Vector3(0, 0, -30));
+           
+        }
+
     }
 
     void OnTriggerEnter2D(Collider2D other)
