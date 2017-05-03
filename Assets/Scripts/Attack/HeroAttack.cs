@@ -7,6 +7,7 @@ public class HeroAttack : MonoBehaviour {
     [SerializeField]
     GameObject campoAtaque;
     BoxCollider2D triggerAttack;
+   
 
     //Transform Enemy;
     EnemyAttack eAtack;
@@ -18,6 +19,7 @@ public class HeroAttack : MonoBehaviour {
     // Use this for initialization
     void Start () {
         lifeE = new LifeEnemy();
+        
 	}
 	
 	// Update is called once per frame
@@ -40,14 +42,19 @@ public class HeroAttack : MonoBehaviour {
             if (Input.GetButtonDown("Fire1"))
             {
                 Debug.Log("Vamos");
-                campoAtaque.transform.Rotate(Vector3.back*Time.deltaTime*2, 45);
+                campoAtaque.transform.Rotate(new Vector3(0, 0, 30));
                 Debug.Log("Hecho el ataque");
                 lifeE.life -= danioHero;
-                Debug.Log("He hecho daño. Ahora tiene "+ lifeE.life);
+                Debug.Log("He hecho daño. Ahora tiene "+ lifeE.life);             
+            }
+
+            if (Input.GetButtonUp("Fire1"))
+            {
+                campoAtaque.transform.Rotate(new Vector3(0, 0, -30));
 
             }
 
-            
+
         }
     }
 }
