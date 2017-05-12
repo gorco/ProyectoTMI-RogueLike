@@ -5,9 +5,11 @@ using UnityEngine;
 public class Door : MonoBehaviour {
 
     public string nameofnextroom;
+    public string thisroom;
     public int next_room;
     public bool closed;
     public bool exist;
+    public bool entered = false;
     public int place;
 
 	// Use this for initialization
@@ -36,11 +38,11 @@ public class Door : MonoBehaviour {
         if (coll.CompareTag("Player"))
         {
             
-            GameObject.FindGameObjectWithTag("Room").GetComponent<DungeonLevel>().refreshRoom(place, nameofnextroom);
+            GameObject.FindGameObjectWithTag("Room").GetComponent<DungeonLevel>().refreshRoom(place, nameofnextroom,gameObject.GetComponent<Door>());
+
         }
     }
 	// Update is called once per frame
 	void Update () {
-		
 	}
 }

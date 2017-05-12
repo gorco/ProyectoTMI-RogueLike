@@ -59,31 +59,31 @@ public class GameManager : MonoBehaviour {
                 n_salas = n_salas + 1;
                 break;
             case Dungeon.Level2:
-                n_salas = n_salas + 2;
+                n_salas = n_salas + 1;
                 break;
             case Dungeon.Level3:
-                n_salas = n_salas + 3;
+                n_salas = n_salas + 1;
                 break;
             case Dungeon.Level4:
-                n_salas = n_salas + 4;
+                n_salas = n_salas + 1;
                 break;
             case Dungeon.Level5:
-                n_salas = n_salas + 5;
+                n_salas = n_salas + 1;
                 break;
             case Dungeon.Level6:
-                n_salas = n_salas + 6;
+                n_salas = n_salas + 1;
                 break;
             case Dungeon.Level7:
-                n_salas = n_salas + 7;
+                n_salas = n_salas + 1;
                 break;
             case Dungeon.Level8:
-                n_salas = n_salas + 8;
+                n_salas = n_salas + 1;
                 break;
             case Dungeon.Level9:
-                n_salas = n_salas + 9;
+                n_salas = n_salas + 1;
                 break;
             case Dungeon.Level10:
-                n_salas = n_salas + 10;
+                n_salas = n_salas + 1;
                 break;
 
         }
