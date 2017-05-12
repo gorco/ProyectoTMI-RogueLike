@@ -6,6 +6,8 @@ using System;
 public class HeroMovement : MonoBehaviour {
     public float speed = 10.0F; //Velocidad de movimiento
     private int dir=1; //posición donde mira 1:arriba, 2: abajo, 3: dcha, 4: izda
+    public float peso = 0; //valor entre 0 y 120
+
     
     // Use this for initialization
     void Start () {
@@ -16,7 +18,7 @@ public class HeroMovement : MonoBehaviour {
 	void Update () {
         if (Input.GetAxis("Horizontal") < 0 && dir != 4)//izda
         {
-            Debug.Log("izda");
+            //Debug.Log("izda");
             
             //transform.Rotate(Vector3.back, -90);
             if (dir == 1)
@@ -30,7 +32,7 @@ public class HeroMovement : MonoBehaviour {
         }
         else if (Input.GetAxis("Horizontal") > 0 && dir !=3)//dcha
         {
-            Debug.Log("dcha");
+            //Debug.Log("dcha");
            
             if (dir == 1)
                 transform.Rotate(Vector3.back, 90);
@@ -56,17 +58,30 @@ public class HeroMovement : MonoBehaviour {
            
         else if (Input.GetAxis("Vertical") < 0 && dir != 2 )//abajo
         {
-            Debug.Log("pabajo");
+            //Debug.Log("pabajo");
              Quaternion newRot = transform.rotation;
-             Debug.Log(newRot);
+             //Debug.Log(newRot);
              newRot.z = 180.0f;
              transform.rotation = newRot;
-             Debug.Log(newRot);
+             //Debug.Log(newRot);
             dir = 2;
         }
         transform.Translate(0, speed * Math.Abs(Input.GetAxis("Vertical"))*Time.deltaTime, 0);
         transform.Translate(0, speed * Math.Abs(Input.GetAxis("Horizontal")) * Time.deltaTime, 0);
         
+    }
+
+    public void setSpeedfromPeso(float peso)
+    {
+
+    }
+
+    public void setSpeed(float v)
+    {
+        if (v > 10)
+            speed = 10;
+        if (v < 1)
+            speed = 1;
     }
 
     

@@ -6,7 +6,7 @@ public class LifeHero : MonoBehaviour {
 
     private float maxLife = 100;
     public float life = 100;
-
+    public float defensa = 0;
 
     // Use this for initialization
     void Start()
