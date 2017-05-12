@@ -8,11 +8,12 @@ public class HeroAttack : MonoBehaviour {
     GameObject campoAtaque;
     BoxCollider2D triggerAttack;
    
-
-    //Transform Enemy;
     EnemyAttack eAtack;
-    int danioHero = 10;
     LifeEnemy lifeE;
+
+    public float danioHero = 10;//ataque
+    public float speedAttack = 1;
+    
 
     
 
@@ -26,13 +27,13 @@ public class HeroAttack : MonoBehaviour {
 	void Update () {
         if (Input.GetButtonDown("Fire1"))
         {
-            
-            campoAtaque.transform.Rotate(new Vector3(0, 0, 30));
+
+            campoAtaque.transform.Rotate(new Vector3(0, 0, 90));// * Time.deltaTime * speedAttack);
            
         }
         if (Input.GetButtonUp("Fire1"))
         {
-            campoAtaque.transform.Rotate(new Vector3(0, 0, -30));
+            campoAtaque.transform.Rotate(new Vector3(0, 0, -90));// * Time.deltaTime * speedAttack);
            
         }
 
@@ -42,30 +43,20 @@ public class HeroAttack : MonoBehaviour {
     {
         if (other.CompareTag("enemigoSphere"))
         {
-            Debug.Log("puedo atacar");
+            Debug.Log("Hecho el ataque");
+            lifeE.life -= danioHero;
+            Debug.Log("He hecho daño. Ahora tiene " + lifeE.life);
         }
     }
 
-    private void OnTriggerStay2D(Collider2D collision)
+    
+    public void setDanioH(float d)
     {
-        if (collision.CompareTag("enemigoSphere"))
-        {
-            if (Input.GetButtonDown("Fire1"))
-            {
-                Debug.Log("Vamos");
-                campoAtaque.transform.Rotate(new Vector3(0, 0, 30));
-                Debug.Log("Hecho el ataque");
-                lifeE.life -= danioHero;
-                Debug.Log("He hecho daño. Ahora tiene "+ lifeE.life);             
-            }
+        danioHero = d;
+    }
 
-            if (Input.GetButtonUp("Fire1"))
-            {
-                campoAtaque.transform.Rotate(new Vector3(0, 0, -30));
-
-            }
-
-
-        }
+    public void setSpeedAttack(float s)
+    {
+        speedAttack = s;
     }
 }
