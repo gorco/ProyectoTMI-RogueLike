@@ -44,8 +44,9 @@ public class HeroAttack : MonoBehaviour {
         if (other.CompareTag("enemigoSphere"))
         {
             Debug.Log("Hecho el ataque");
-            lifeE.life -= danioHero;
-            Debug.Log("He hecho daño. Ahora tiene " + lifeE.life);
+            lifeE.quitaVida(danioHero);
+            //lifeE.life -= danioHero;
+            //Debug.Log("He hecho daño. Ahora tiene " + lifeE.life);
         }
     }
 

@@ -28,10 +28,10 @@ public class ArmaArrojadiza : MonoBehaviour {
     {
         if (collision.CompareTag("HeroImage"))
         {
-            lH.life -= danioArma;
-            Debug.Log("He disparado al heroe acertando\nLe queda"+lH.life+"de vida");
+            lH.quitaVida(danioArma);
+            
             transform.position = posIni;
-            //eda.mueveArma();
+            
         }
         
 
