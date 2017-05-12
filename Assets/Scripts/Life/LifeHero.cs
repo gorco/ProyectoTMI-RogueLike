@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class LifeHero : MonoBehaviour {
 
-    private float maxLife = 100;
-    public float life = 100;
+    public float maxLife = 100.0f;
+    private float life = 100.0f;
     public float defensa = 0;
 
     // Use this for initialization
@@ -17,9 +17,17 @@ public class LifeHero : MonoBehaviour {
     // Update is called once per frame
     void Update()
     {
-        if (life > maxLife)
-            life = maxLife;
-        if (life < 0)
+        
+    }
+
+    public void quitaVida(float danio)
+    {
+        life -= danio;
+        if (life <= 0)
+        {
             life = 0;
+            //Destroy(gameObject);
+        }
+        Debug.Log("Vida heroe: "+life);
     }
 }

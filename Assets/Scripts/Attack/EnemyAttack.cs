@@ -6,8 +6,9 @@ using UnityEngine;
 
 public class EnemyAttack : MonoBehaviour {
 
-    int danioEnemy = 5;
-    float timeAttack = 0.0f;
+    public float danioEnemy = 5;
+    public float vTimeAttack = 1.5f;
+    float timeAttack=0;
     LifeHero lifeH;
     
 
@@ -26,8 +27,8 @@ public class EnemyAttack : MonoBehaviour {
         if (collision.CompareTag("HeroImage"))
         {
             
-            timeAttack += Time.deltaTime;
-            if (timeAttack >= 1.5)
+            timeAttack -= Time.deltaTime;
+            if (timeAttack >= 0)
             {
                 timeAttack = 0;
                 lifeH.life -= danioEnemy;

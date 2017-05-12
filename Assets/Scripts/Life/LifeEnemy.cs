@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class LifeEnemy : MonoBehaviour {
 
-    private float maxLife = 70;
-    public float life = 70;
+    public float maxLife = 70;
+    private float life = 70.0f;
 
 
 	// Use this for initialization
@@ -15,9 +15,17 @@ public class LifeEnemy : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-        if (life > maxLife)
-            life = maxLife;
-        if (life < 0)
+        
+    }
+
+    public void quitaVida(float danio)
+    {
+        life -= danio;
+        if (life <= 0)
+        {
             life = 0;
+            //Destroy(gameObject);
+        }
+        Debug.Log("Vida enemigo: "+life);
     }
 }
