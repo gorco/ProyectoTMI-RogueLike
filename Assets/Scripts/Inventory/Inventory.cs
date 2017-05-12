@@ -11,11 +11,11 @@ public class Inventory : MonoBehaviour {
 	private List<Slot> equipmentSlots = new List<Slot>();
 
 	[Header("Equipment Slots")]
-	private Slot helmet;
-	private Slot right;
-	private Slot left;
-	private Slot body;
-	private Slot foots;
+	public Slot helmet;
+	public Slot right;
+	public Slot left;
+	public Slot body;
+	public Slot foots;
 
 	[Header("Hover")]
 	public GameObject iconPrefab;
@@ -26,6 +26,7 @@ public class Inventory : MonoBehaviour {
 	public Canvas canvas;
 	public CanvasGroup canvasGroup;
 	public EventSystem eventSystem;
+	public Text statsText;
 
 	public GameObject tooltipObject;
 	public Text sizeTextObject;
@@ -73,6 +74,12 @@ public class Inventory : MonoBehaviour {
 		tooltip = tooltipObject;
 		sizeText = sizeTextObject;
 		visualText = visualTextObject;
+
+		helmet.AddSpecialization(ItemType.Head);
+		right.AddSpecialization(ItemType.Weapon);
+		left.AddSpecialization(ItemType.Shield);
+		body.AddSpecialization(ItemType.Armor);
+		foots.AddSpecialization(ItemType.Boots);
 
 		slotsList.Clear();
 		foreach(Slot slt in GetComponentsInChildren<Slot>())
@@ -199,6 +206,7 @@ public class Inventory : MonoBehaviour {
 		Slot spSlot = GetSpecilizedSlot(slot.GetCurrentItem().itemType);
         MoveItem(slot.gameObject);
 		MoveItem(spSlot.gameObject);
+		updateStatsText();
 	}
 
 	public void MoveItem(GameObject clicked)
@@ -286,20 +294,16 @@ public class Inventory : MonoBehaviour {
 		}
 	}
 
-	public void updateStatsText(string text)
+	public void updateStatsText()
 	{
-		//statsText.text = text;
-	}
-
-	public void CalcStats()
-	{
-		//Player p = FindObjectOfType<Player>();
 		int maxLife = 0;
-		int str = 0;
+		int atk = 0;
+		int spdAtk = 0;
 		int def = 0;
-		int dex = 0;
-		int spd = 0;
 		int luc = 0;
+		int weight = 0;
+
+		string stats = string.Empty;
 
 		for (int i = 0; i < equipmentSlots.Count; i++)
 		{
@@ -307,11 +311,46 @@ public class Inventory : MonoBehaviour {
 			{
 				Item item = equipmentSlots[i].GetCurrentItem();
 				maxLife += item.maxLife;
-				str += item.str;
+				atk += item.atk;
+				spdAtk += item.spdAtk;
 				def += item.def;
-				dex += item.dex;
-				spd += item.spd;
 				luc += item.luc;
+				weight += item.weight;
+			}
+		}
+
+		stats += maxLife.ToString() + "\n";
+		stats += atk.ToString() + "\n";
+		stats += spdAtk.ToString() + "\n";
+		stats += def.ToString() + "\n";
+		stats += luc.ToString() + "\n";
+		stats += weight.ToString() + "\n";
+		// get user stats
+
+		statsText.text = string.Format("<size=16><color=black>{0}</color></size>", stats);
+	}
+
+	public void CalcStats()
+	{
+		//Player p = FindObjectOfType<Player>();
+		int maxLife = 0;
+		int atk = 0;
+		int speedAtk = 0;
+		int def = 0;
+		int luc = 0;
+		int weight = 0;
+
+		for (int i = 0; i < equipmentSlots.Count; i++)
+		{
+			if (!equipmentSlots[i].IsEmpty())
+			{
+				Item item = equipmentSlots[i].GetCurrentItem();
+				maxLife += item.maxLife;
+				atk += item.atk;
+				speedAtk += item.spdAtk;
+				def += item.def;
+				luc += item.luc;
+				weight += item.weight;
 			}
 		}
 
