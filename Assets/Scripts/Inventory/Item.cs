@@ -40,14 +40,13 @@ public class Item : MonoBehaviour {
 	public int value;
 
 	[Header("Attributes")]
-	public int hungry;
 	public int life;
 	public int maxLife;
-	public int str;
+	public int atk;
+	public int spdAtk;
 	public int def;
-	public int dex;
-	public int spd;
 	public int luc;
+	public int weight;
 
 	public void Use ()
 	{
@@ -55,7 +54,6 @@ public class Item : MonoBehaviour {
 		{
 			case ItemType.Consumable:
 				//Player p = GameObject.Find("Player").GetComponent<Player>();
-				//p.Eat(hungry);
 				//p.ObtainLife(life);
 				break;
 			case ItemType.Potions:
@@ -93,15 +91,6 @@ public class Item : MonoBehaviour {
 
 	public string GetTooltip()
 	{
-		/*Player p = GameObject.Find("Player").GetComponent<Player>();
-        int hungryBonus = Mathf.RoundToInt(hungry * p.GetSkillBonus(0));
-		int lifeBonus = Mathf.RoundToInt(life * p.GetSkillBonus(1));
-		int strBonus = Mathf.RoundToInt(str * p.GetSkillBonus(2));
-		int defBonus = Mathf.RoundToInt(def * p.GetSkillBonus(3));
-		int dexBonus = Mathf.RoundToInt(dex * p.GetSkillBonus(4));
-		int spdBonus = Mathf.RoundToInt(spd * p.GetSkillBonus(5));
-		int lucBonus = Mathf.RoundToInt(luc * p.GetSkillBonus(6));
-		*/
 		string stats = string.Empty;
 		string color = string.Empty;
 		string newLine = string.Empty;
@@ -120,77 +109,43 @@ public class Item : MonoBehaviour {
 				color = "green";
 				break;
 			case Quality.Rare:
-				color = "navy";
+				color = "cyan";
 				break;
 			case Quality.Epic:
 				color = "orange";
 				break;
 		}
-		/*
+
+		stats += "\n";
 		if (life > 0)
 		{
-			stats += "\n Heal " + life.ToString() + " points of life";
-			if(life != lifeBonus)
-			{
-				stats += " (" + lifeBonus + " with skills)";
-			}
-		}
-		if (hungry > 0)
-		{
-			stats += "\n Takes away hunger ("+hungry+" points)";
-			if (hungry != hungryBonus)
-			{
-				stats += " (" + hungryBonus + " with skills)";
-			}
+			stats += "\n\tHeal " + life.ToString() + " points of life";
 		}
 		if (maxLife > 0)
 		{
-			stats += "\n+" + maxLife.ToString() + " Max Life"; 
+			stats += "\n\t+" + maxLife.ToString() + " Max Life"; 
 		}
-		if (str > 0)
+		if (atk > 0)
 		{
-			stats += "\n+" + str.ToString() + " Strength";
-			if (str != strBonus)
-			{
-				stats += " (" + strBonus + " with skills)";
-			}
+			stats += "\n\t+" + atk.ToString() + " Attack Power";
+		}
+		if (spdAtk > 0)
+		{
+			stats += "\n\t+" + spdAtk.ToString() + " Attack Speed";
 		}
 		if (def > 0)
 		{
-			stats += "\n+" + def.ToString() + " Defense";
-			if (def != defBonus)
-			{
-				stats += " (" + defBonus + " with skills)";
-			}
-		}
-		if (dex > 0)
-		{
-			stats += "\n+" + dex.ToString() + " Dexterity";
-			if (dex != dexBonus)
-			{
-				stats += " (" + dexBonus + " with skills)";
-			}
-		}
-		if (spd > 0)
-		{
-			stats += "\n+" + spd.ToString() + " Speed";
-			if (spd != spdBonus)
-			{
-				stats += " (" + spdBonus + " with skills)";
-			}
+			stats += "\n\t+" + def.ToString() + " Defense Bonus";
 		}
 		if (luc > 0)
 		{
-			stats += "\n+" + luc.ToString() + " Luck";
-			if (luc != lucBonus)
-			{
-				stats += " (" + lucBonus + " with skills)";
-			}
+			stats += "\n\t+" + luc.ToString() + " Luck (critical attack)";
 		}
-		
+		if (weight > 0)
+		{
+			stats += "\n\t+" + weight.ToString() + " Kg of Weight";
+		}
 		return string.Format("<color=" + color + "><size=16>{0}</size></color><size=14><i><color=lime>"+newLine+"{1}</color></i>{2}</size>",itemName,itemInfo,stats);
-		*/
-		return "Hola que pasa soy un tooltip";
 	}
 
 }
