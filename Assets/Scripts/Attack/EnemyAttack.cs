@@ -9,7 +9,7 @@ public class EnemyAttack : MonoBehaviour {
     public float danioEnemy = 5;
     public float vTimeAttack = 1.5f;
     float timeAttack=0;
-    LifeHero lifeH;
+    public LifeHero lifeH;
     
 
     // Use this for initialization
@@ -27,12 +27,13 @@ public class EnemyAttack : MonoBehaviour {
         if (collision.CompareTag("HeroImage"))
         {
             
-            timeAttack -= Time.deltaTime;
-            if (timeAttack >= 0)
+            timeAttack += Time.deltaTime;
+            if (timeAttack >= vTimeAttack)
             {
                 timeAttack = 0;
-                lifeH.life -= danioEnemy;
-                Debug.Log("Me han dañado. Ahora tengo " + lifeH.life);
+                lifeH.quitaVida(danioEnemy);
+                //lifeH.life -= danioEnemy;
+               // Debug.Log("Me han dañado. Ahora tengo " + lifeH);
             }
         }
 

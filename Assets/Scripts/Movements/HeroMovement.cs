@@ -66,6 +66,8 @@ public class HeroMovement : MonoBehaviour {
              //Debug.Log(newRot);
             dir = 2;
         }
+        setSpeedfromPeso(peso);
+
         transform.Translate(0, speed * Math.Abs(Input.GetAxis("Vertical"))*Time.deltaTime, 0);
         transform.Translate(0, speed * Math.Abs(Input.GetAxis("Horizontal")) * Time.deltaTime, 0);
         
@@ -73,7 +75,7 @@ public class HeroMovement : MonoBehaviour {
 
     public void setSpeedfromPeso(float peso)
     {
-
+        speed = 10 - (peso / 15);
     }
 
     public void setSpeed(float v)
