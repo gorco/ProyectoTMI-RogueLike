@@ -11,7 +11,7 @@ public class EnemyDAtack : MonoBehaviour {
 
     public GameObject flechaPrefab;
 
-    LifeHero lifeH;
+    public LifeHero lifeH;
 
     private Vector2 posPlayer;
     private bool visto = false; //Indica si el enemigo ve al jugador
