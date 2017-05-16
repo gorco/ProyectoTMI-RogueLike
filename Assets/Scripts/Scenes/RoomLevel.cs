@@ -37,7 +37,7 @@ public class RoomLevel : MonoBehaviour {
             spawner.selectDoor(n_doors,r, n);//creo n_doors puertas
 
     //    }
-    }
+     }
 
     // Update is called once per frame
     void Update () {

@@ -40,7 +40,7 @@ public class Door : MonoBehaviour {
             
             GameObject.FindGameObjectWithTag("Room").GetComponent<DungeonLevel>().refreshRoom(place, nameofnextroom,gameObject.GetComponent<Door>());
 
-        }
+        } 
     }
 	// Update is called once per frame
 	void Update () {

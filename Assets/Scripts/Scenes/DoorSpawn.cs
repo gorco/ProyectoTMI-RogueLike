@@ -203,7 +203,7 @@ public class DoorSpawn : MonoBehaviour {
                         newDoor.place = n;
                         newDoor.enabled = true;
                         break;
-                }
+                } 
                 newDoor.gameObject.SetActive(true);
                 place[i] = n;
                 spawns[n] = true;

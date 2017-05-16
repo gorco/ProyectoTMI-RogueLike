@@ -167,7 +167,7 @@ public class DungeonLevel : MonoBehaviour {
             }
             else
             {
-                System.Random r = new System.Random();
+                System.Random r = new System.Random(); 
                 int n = r.Next(1, max_doors+1);
                 if (n == previousN && (n+1 <= max_doors)) n += 1;
                 while ((n + temporal_doors) > gameManager.N_salas + gameManager.N_salas - 2)
