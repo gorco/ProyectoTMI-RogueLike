@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+<<<<<<< HEAD:Assets/Resources.meta
+guid: 0e5ca5ef3fe83994b9eff2bb6433205a
+folderAsset: yes
+timeCreated: 1493231558
+=======
+guid: a2d1d544339030849bdec633b38b71cf
+folderAsset: yes
+timeCreated: 1493048326
+>>>>>>> cb8b4c12833a9c4ea91b2a29f97a32ca451aef7f:Assets/Scripts/Attack.meta
+licenseType: Free
+DefaultImporter:
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
