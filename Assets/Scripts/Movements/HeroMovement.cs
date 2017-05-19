@@ -8,68 +8,80 @@ public class HeroMovement : MonoBehaviour {
     private int dir=1; //posición donde mira 1:arriba, 2: abajo, 3: dcha, 4: izda
     public float peso = 0; //valor entre 0 y 120
 
-    
+	public GameObject weapon;
+	public Sprite up;
+	public Sprite right;
+	public Sprite down;
+	public Sprite left;
+
+	private SpriteRenderer sprite;
+
+	private int xDir = 1;
+	private int yDir = 1;
+
     // Use this for initialization
     void Start () {
-        
+		sprite = GetComponent<SpriteRenderer>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        if (Input.GetAxis("Horizontal") < 0 && dir != 4)//izda
+        if (Input.GetAxis("Horizontal") < 0)//izda
         {
-            //Debug.Log("izda");
-            
+			//Debug.Log("izda");
+			sprite.sprite = left;
             //transform.Rotate(Vector3.back, -90);
             if (dir == 1)
-                transform.Rotate(Vector3.back, -90);
+				weapon.transform.Rotate(Vector3.back, -90);
             else if (dir == 2)
-                transform.Rotate(Vector3.back, 90);
+				weapon.transform.Rotate(Vector3.back, 90);
             else if (dir == 3)
-                transform.Rotate(Vector3.back, 180);
+				weapon.transform.Rotate(Vector3.back, 180);
             dir = 4;
-
-        }
-        else if (Input.GetAxis("Horizontal") > 0 && dir !=3)//dcha
+			xDir = Mathf.FloorToInt(Input.GetAxis("Horizontal")); ;
+		}
+        if (Input.GetAxis("Horizontal") > 0)//dcha
         {
-            //Debug.Log("dcha");
-           
-            if (dir == 1)
-                transform.Rotate(Vector3.back, 90);
+			//Debug.Log("dcha");
+			sprite.sprite = right;
+			if (dir == 1)
+				weapon.transform.Rotate(Vector3.back, 90);
             else if (dir == 2)
-                transform.Rotate(Vector3.back, -90);
+				weapon.transform.Rotate(Vector3.back, -90);
             else if (dir == 4)
-                transform.Rotate(Vector3.back, 180);
+				weapon.transform.Rotate(Vector3.back, 180);
             dir = 3;
-
-        }
+			xDir = Mathf.CeilToInt(Input.GetAxis("Horizontal")); ;
+		}
             
-        else if (Input.GetAxis("Vertical") > 0 && dir != 1)//arriba
+        if (Input.GetAxis("Vertical") > 0)//arriba
         {
-            
-            Quaternion newRot = transform.rotation;
+			sprite.sprite = up;
+			Quaternion newRot = transform.rotation;
             //Debug.Log(newRot);
             newRot.z = 0.0f;
-            transform.rotation = newRot;
+			weapon.transform.rotation = newRot;
             //Debug.Log(newRot);
             dir = 1;
-
-        }
+			yDir = Mathf.CeilToInt(Input.GetAxis("Vertical")); ;
+		}
            
-        else if (Input.GetAxis("Vertical") < 0 && dir != 2 )//abajo
+        if (Input.GetAxis("Vertical") < 0)//abajo
         {
-            //Debug.Log("pabajo");
-             Quaternion newRot = transform.rotation;
-             //Debug.Log(newRot);
-             newRot.z = 180.0f;
-             transform.rotation = newRot;
-             //Debug.Log(newRot);
+			sprite.sprite = down;
+			//Debug.Log("pabajo");
+			Quaternion newRot = transform.rotation;
+            //Debug.Log(newRot);
+            newRot.z = 180.0f;
+			weapon.transform.rotation = newRot;
+            //Debug.Log(newRot);
             dir = 2;
+			yDir = Mathf.FloorToInt(Input.GetAxis("Vertical"));
         }
         setSpeedfromPeso(peso);
 
-        transform.Translate(0, speed * Math.Abs(Input.GetAxis("Vertical"))*Time.deltaTime, 0);
-        transform.Translate(0, speed * Math.Abs(Input.GetAxis("Horizontal")) * Time.deltaTime, 0);
+        transform.Translate(speed * Math.Abs(Input.GetAxis("Horizontal")) * Time.deltaTime * xDir, speed * Math.Abs(Input.GetAxis("Vertical"))*Time.deltaTime * yDir, 0);
+        transform.Translate(speed * Math.Abs(Input.GetAxis("Horizontal")) * Time.deltaTime * xDir, speed * Math.Abs(Input.GetAxis("Vertical")) * Time.deltaTime * yDir, 0);
         
     }
 

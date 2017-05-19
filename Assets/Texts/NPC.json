@@ -2,11 +2,27 @@
 	"intro":{
 		"root": {
 			"type": "dialog",
+			"next": "options",
 			"fragments": [{
 				"tag": "Voz en off",
 				"character": "NPC",
 				"msn": "Bienvenido, supongo que te preguntarás dónde estás y quién soy yo"
+			}]
+		},
+		"options": {
+			"type": "options",
+			"options": [{
+				"msn": "Suficiente, silencio!!!"
 			},
+			{
+				"next": "continue",
+				"msn": "¿Donde estoy? ¿Quién eres?"
+			}]
+		},
+		"continue": {
+			"type": "dialog",
+			"next": "options",
+			"fragments": [
 			{
 				"tag": "Voz en off",
 				"character": "NPC",
