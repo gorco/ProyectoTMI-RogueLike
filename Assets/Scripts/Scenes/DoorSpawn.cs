@@ -29,12 +29,7 @@ public class DoorSpawn : MonoBehaviour {
     internal void selectDoor(int num_doors, Door door, int number)
     {
         int auxiliar = 0;
-        foreach(Room room in level.multipleDoorMap.Values)
-        {
-            if (num_doors == room.n_doors)
-                auxiliar += 1;
-        }
-        countOfMultipleRoomsFilled = auxiliar;
+        
             //si paso por una puerta y ya se ha creado la sala
             if (door != null && level.salasCreadas.ContainsKey(door.nameofnextroom))
         {  //desactivo todas las puertas
@@ -197,21 +192,13 @@ public class DoorSpawn : MonoBehaviour {
                 else
                 {
                     newIndex = choosePosition();
-                    level.ocupadas[newIndex] = (int)level.ocupadas[newIndex] + 1;//aumento en uno las puertas ocupadas
+                    //level.ocupadas[newIndex] = (int)level.ocupadas[newIndex] + 1;//aumento en uno las puertas ocupadas
+                    level.ocupadas[level.Actual.number] = (int)level.ocupadas[level.Actual.number] + 1;
                 }
                 
 
-                // int j = r.Next(level.map.Count);
-                //level.ocupadas[0] = 1;
-                /*  if ((int)level.ocupadas[j]-1 > num_doors )
-                  {
-                      level.ocupadas[j] = (int)level.ocupadas[j] + 1;
-                  }
-                  else
-                      j = choosePosition(j,number);
-                  level.ocupadas[j] = (int)level.ocupadas[j] + 1;*/
                 //creo las nuevas puertas en la posicion n
-                //y el la nextroom j
+                //y el la nextroom newIndex
                 switch (n)
                 {
                     case 0:
@@ -380,35 +367,47 @@ public class DoorSpawn : MonoBehaviour {
         System.Random r = new System.Random();
         int j = 0;
         bool encontrado = false;
+        int actualIndex = 1000;
+        if (level.multipleDoorMap.ContainsKey(level.Actual.name))
+        {
+            Room room = (Room)level.multipleDoorMap[level.Actual.name];
+            actualIndex = room.number;
+        }
         while (encontrado == false)
         {
-            if (countOfMultipleRoomsFilled == level.multipleDoorMap.Count)
+            if (j == actualIndex)
+                j = r.Next(level.map.Count);
+            else
             {
-                if(level.oneDoorMap.ContainsKey("room_"+j))
+                if ((countOfMultipleRoomsFilled == level.multipleDoorMap.Count) || ((level.multipleDoorMap.Count -1 == countOfMultipleRoomsFilled) && (actualIndex == level.Actual.number)))
                 {
-                    aux = (Room)level.oneDoorMap["room_" + j];
-                    if (aux.n_doors > (int)level.ocupadas[j])//si la sala tiene mas puertas que las que se han creado aun
-                        encontrado = true;
-                    else
-                        j = r.Next(level.map.Count);
+                    if (level.oneDoorMap.ContainsKey("room_" + j))
+                    {
+                        aux = (Room)level.oneDoorMap["room_" + j];
+                        if (aux.n_doors > (int)level.ocupadas[j])//si la sala tiene mas puertas que las que se han creado aun
+                            encontrado = true;
+                        else
+                            j = r.Next(level.map.Count);
+                    }
                 }
-            }
-            else if (level.multipleDoorMap.ContainsKey("room_" + j))
+                else if (level.multipleDoorMap.ContainsKey("room_" + j))
                 {
                     aux = (Room)level.multipleDoorMap["room_" + j];
                     if (aux.n_doors > (int)level.ocupadas[j])//si la sala tiene mas puertas que las que se han creado aun
                     {
                         encontrado = true;
-                  //  if(aux.n_doors == (int)level.ocupadas[j]+1)
-                      //  countOfMultipleRoomsFilled += 1;
+                        if (aux.n_doors == (int)level.ocupadas[j] + 1)
+                            countOfMultipleRoomsFilled += 1;
                     }
                     else
                         j = r.Next(level.map.Count);
                 }
-            else
-                j = r.Next(level.map.Count);
+                else
+                    j = r.Next(level.map.Count);
 
+            }
         }
+            
         return j;
     }
 

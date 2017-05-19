@@ -154,7 +154,7 @@ public class DungeonLevel : MonoBehaviour {
         int n_salascreadas = 0;
         int max_doors = 0;
         if (gameManager.currentLevel == GameManager.Dungeon.Tutorial)
-            max_doors = 2;
+            max_doors = 4;
         else if (gameManager.currentLevel == GameManager.Dungeon.Level1)
             max_doors = 3;
         else max_doors = 4;

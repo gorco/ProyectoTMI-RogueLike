@@ -53,7 +53,7 @@ public class GameManager : MonoBehaviour {
 		switch(currentLevel)
         {
             case Dungeon.Tutorial:
-                n_salas = 3;
+                n_salas = 5;
                 break;
             case Dungeon.Level1:
                 n_salas = n_salas + 1;
