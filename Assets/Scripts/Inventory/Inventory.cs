@@ -219,6 +219,7 @@ public class Inventory : MonoBehaviour {
 				from.GetComponent<Image>().color = Color.gray;
 
 				hoverObject = Instantiate(iconPrefab);
+				hoverObject.name = "HoverObject";
 				hoverObject.GetComponent<Image>().sprite = from.GetCurrentItem().itemSprite;
 				from.HideItem(true); 
 
