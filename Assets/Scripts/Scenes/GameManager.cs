@@ -12,7 +12,7 @@ public class GameManager : MonoBehaviour {
     bool newGame = true;
     [SerializeField]
     DungeonLevel currentDungeon = null;
-    int n_salas = 3;
+    int n_salas = 5;
     
     GameObject room;
 

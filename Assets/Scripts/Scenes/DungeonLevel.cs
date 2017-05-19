@@ -24,7 +24,7 @@ public class DungeonLevel : MonoBehaviour {
     public RoomTree<string, Room> oneDoorMap = new RoomTree<string, Room>();//contiene las salas que solo tienen una puerta
     public RoomTree<string, Room> multipleDoorMap = new RoomTree<string, Room>();//contiene las salas que tienen varias puertas
     public RoomTree<int, int> ocupadas = new RoomTree<int, int>();//salas que ya tienen puertas, cuantas tienen ocupadas
-    public RoomTree<string, Door[]> salasCreadas = new RoomTree<string, Door[]>();//guardo las salas crafteadas
+    public RoomTree<string, DoorData[]> salasCreadas = new RoomTree<string, DoorData[]>();//guardo las salas crafteadas
     public RoomTree<string, GameObject[]> prefabsInRoom = new RoomTree<string, GameObject[]>();//guardo enemigos y objetos en sala
     public bool loadLevel = false;
     public Door[] doors = new Door[4];

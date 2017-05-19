@@ -2,6 +2,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using System.Xml;
+using System.Linq;
 //BRUJERIA 2 DE 2
 public class DoorSpawn : MonoBehaviour {
 
@@ -25,26 +27,91 @@ public class DoorSpawn : MonoBehaviour {
             countOfMultipleRoomsFilled = 1;
     }
 
+    public void saving(string nameofnextroom)
+    {
+        Door nuevo = null;
+        XmlDocument doc = new XmlDocument();
+  /*      try
+        {
+            doc.Load(Application.dataPath + "/Scripts/Scenes/Nodes.xml");
+        }
+        catch (XmlException e)
+        {
+            throw new XmlException("Fallo en la escritura del fichero: ", e);
+        }*/
+        System.Xml.Serialization.XmlSerializer writer =
+            new System.Xml.Serialization.XmlSerializer(typeof(DoorData));
+
+        System.IO.StreamWriter file = new System.IO.StreamWriter(
+            Application.dataPath + "/Scripts/Scenes/Nodes.xml");
+        DoorData[] auxiliar = (DoorData[])level.salasCreadas[nameofnextroom];
+        foreach(DoorData door in auxiliar)
+            writer.Serialize(file, door);
+        file.Close();
+        
+    }
+
+
+    public void loading(bool isOrganic)
+    {
+        DoorData nuevo = null;
+        XmlDocument doc = new XmlDocument();
+        try
+        {
+            doc.Load(Application.dataPath + "/Scripts/Nodes.xml");
+
+        }
+        catch (XmlException e)
+        {
+            throw new XmlException("Fallo en la lectura del fichero: ", e);
+        }
+
+        System.Xml.Serialization.XmlSerializer reader = new System.Xml.Serialization.XmlSerializer(typeof(Door));
+        System.IO.StreamReader file = new System.IO.StreamReader(Application.dataPath + "/Scripts/Nodes.xml");
+        nuevo = new DoorData();
+        nuevo = (DoorData)reader.Deserialize(file);
+        DoorData[] temporalDoors;
+        if (level.salasCreadas.ContainsKey(nuevo.thisroom))
+        {
+            temporalDoors = (DoorData[])level.salasCreadas[nuevo.thisroom];
+            DoorData[] combined = new DoorData[temporalDoors.Length + 1];
+            Array.Copy(temporalDoors, combined, temporalDoors.Length);
+            Array.Copy(temporalDoors, temporalDoors.Length, combined, temporalDoors.Length, temporalDoors.Length+1);
+            level.salasCreadas.Add(nuevo.thisroom, combined);
+        }
+        else
+        {
+            level.salasCreadas.Add(nuevo.thisroom, nuevo);
+        }
+
+        
+    }
+
+
+
 
     internal void selectDoor(int num_doors, Door door, int number)
     {
         int auxiliar = 0;
         
             //si paso por una puerta y ya se ha creado la sala
-            if (door != null && level.salasCreadas.ContainsKey(door.nameofnextroom))
+        if (door != null && level.salasCreadas.ContainsKey(door.nameofnextroom))
         {  //desactivo todas las puertas
             foreach (GameObject g in GameObject.FindGameObjectsWithTag("Door"))
             {
                 g.SetActive(false);
             }
+            for (int i = 0; i < spawns.Length; i++)
+                spawns[i] = false;
             //habilito las puertas de esa sala
-            Door[] doorsFromRoom = (Door[])level.salasCreadas[door.nameofnextroom];
-            foreach(Door d in doorsFromRoom)
+            DoorData[] doorsFromRoom = (DoorData[])level.salasCreadas[door.nameofnextroom];
+            foreach(DoorData d in doorsFromRoom)
             {
+                
                 if (d != null)
                 {
                   
-                    Door aux = d;
+                    DoorData aux = d;
                     switch (d.place)
                     {
                         case 0:
@@ -81,7 +148,7 @@ public class DoorSpawn : MonoBehaviour {
                             newDoor.enabled = true;
                             break;
                     }
-                    spawns[door.place] = true;//Marco como ocupada
+                    spawns[newDoor.place] = true;//Marco como ocupada
                     newDoor.gameObject.SetActive(true);
                     level.doors[0] = newDoor;
                     Debug.Log("Puerta en " + door.place.ToString());
@@ -123,8 +190,11 @@ public class DoorSpawn : MonoBehaviour {
             //inicializo las habitaciones libres sin puerta
             for (int b = 0; b < spawns.Length; b++)
                 spawns[b] = false;
+
             if (door != null)//calculo la puerta opuesta: 0:N, 1:E, 2:S, 3:W
             {
+                //metodaco chulo chulo chulaco
+                saving(newDoor.nameofnextroom);
                 switch (door.place)
                 {
                     case 0:
@@ -165,7 +235,7 @@ public class DoorSpawn : MonoBehaviour {
                 level.doors[0] = newDoor;
                 Debug.Log("Puerta en " + newDoor.ToString());
                 level.ocupadas[level.Actual.number] = (int)level.ocupadas[level.Actual.number]+1;//marco la sala ocupada añadiendo uno al contador de puertas que la referencian
-                
+
                 //level.Actual.n_doors -= 1;
                 num_doors--;
                 createdDoors[door.place] = newDoor;
@@ -389,6 +459,8 @@ public class DoorSpawn : MonoBehaviour {
                         else
                             j = r.Next(level.map.Count);
                     }
+                    else
+                        j = r.Next(level.map.Count);
                 }
                 else if (level.multipleDoorMap.ContainsKey("room_" + j))
                 {
