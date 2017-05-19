@@ -32,12 +32,9 @@ public class RoomLevel : MonoBehaviour {
     {
         n_doors = gameObject.GetComponent<DungeonLevel>().Actual.n_doors;
         spawner = gameObject.GetComponent<DoorSpawn>();
-//        for (int i = 0; i < n_doors; ++i)
-  //      {
-            spawner.selectDoor(n_doors,r, n);//creo n_doors puertas
-
-    //    }
-     }
+        spawner.selectDoor(n_doors,r, n);//creo n_doors puertas
+        
+    }
 
     // Update is called once per frame
     void Update () {

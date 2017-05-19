@@ -10,48 +10,60 @@ public class EnemySpawn : MonoBehaviour {
     DungeonLevel dungeon;
     public Transform[] spawnLocations;
     public GameObject[] whatSpawnPrefab;
-    public GameObject[] whatSpawnClone;
+    public GameObject whatSpawnClone;
     //GameObject prefab;
 
 
-    void spawn(int n)
+    public void spawn()
     {
-        
-        whatSpawnClone[0] = Instantiate(whatSpawnPrefab[0],spawnLocations[n].transform.position, Quaternion.Euler(0,0,0)) as GameObject;
-            
+        count = 0;
+        dungeon = GameObject.FindGameObjectWithTag("Room").GetComponent<DungeonLevel>();
+        if (dungeon != null)
+        {
+            while (count < dungeon.Actual.n_enemies)
+            {
+                System.Random r = new System.Random();
+                int n = r.Next(spawnLocations.Length-1);
+                Debug.Log("creo coso en "+n);
+                whatSpawnClone = Instantiate(whatSpawnPrefab[0], spawnLocations[n].transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;
+                whatSpawnClone.SetActive(true);
+                count++;
+            }
+        }
+                    
     }
 
 
 	// Use this for initialization
 	void Start () {
-        dungeon = GameObject.FindGameObjectWithTag("GameManager").GetComponent<DungeonLevel>();
-        count = 0;
-        for(int i = 0; i < dungeon.Actual.n_enemies; ++i)
-        {
-            
-            System.Random r = new System.Random();
-            int n = r.Next(3);
-            if (previousPoint == n)
-            {
-                n = (n + 1) % 3;
-                previousPoint = n;
-            }
-                
-            Debug.Log(n.ToString());  
-            spawn(n);
-            count++;
-        }
-       
+        dungeon = GameObject.FindGameObjectWithTag("Room").GetComponent<DungeonLevel>();
+        /* count = 0;
+         if(dungeon != null && dungeon.loadLevel)
+         {
+             for (int i = 0; i < dungeon.Actual.n_enemies; ++i)
+             {
+
+                 System.Random r = new System.Random();
+                 int n = r.Next(3);
+                 if (previousPoint == n)
+                 {
+                     n = (n + 1) % 3;
+                     previousPoint = n;
+                 }
+
+                 Debug.Log(n.ToString());
+                 spawn(n);
+                 count++;
+             }
+         }*/
+
+
     }
-	
-	// Update is called once per frame
-	void Update () {
-        while (count < dungeon.Actual.n_enemies)
-        {
-            System.Random r = new System.Random();
-            int n = r.Next(3);
-            if (dungeon.Actual.n_enemies < dungeon.Actual.n_enemies / 4)
-                spawn(n);
-        }
+
+    // Update is called once per frame
+    void Update () {
+        if (dungeon == null)
+            dungeon = GameObject.FindGameObjectWithTag("Room").GetComponent<DungeonLevel>();
+
     }
 }

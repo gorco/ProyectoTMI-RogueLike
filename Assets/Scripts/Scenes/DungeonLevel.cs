@@ -20,11 +20,13 @@ public class DungeonLevel : MonoBehaviour {
     private Room actual;
     public string nameofpreviousroom;
     GameManager gameManager;
-    public RoomTree<string, Room> map = null;
-    // public RoomTree<string, GameObject> doorMap;
-    public RoomTree<int, bool> ocupadas = new RoomTree<int, bool>();//salas que ya tienen puertas
+    public RoomTree<string, Room> map = null; //mapa de todas las salas
+    public RoomTree<string, Room> oneDoorMap = new RoomTree<string, Room>();//contiene las salas que solo tienen una puerta
+    public RoomTree<string, Room> multipleDoorMap = new RoomTree<string, Room>();//contiene las salas que tienen varias puertas
+    public RoomTree<int, int> ocupadas = new RoomTree<int, int>();//salas que ya tienen puertas, cuantas tienen ocupadas
     public RoomTree<string, Door[]> salasCreadas = new RoomTree<string, Door[]>();//guardo las salas crafteadas
-    bool loadLevel = false;
+    public RoomTree<string, GameObject[]> prefabsInRoom = new RoomTree<string, GameObject[]>();//guardo enemigos y objetos en sala
+    public bool loadLevel = false;
     public Door[] doors = new Door[4];
     GameObject room;
     int p;
@@ -62,28 +64,30 @@ public class DungeonLevel : MonoBehaviour {
                 break;
         }
         Door r = null;
-        
-        //borro las puertas que había
-    /*    foreach (GameObject g in GameObject.FindGameObjectsWithTag("Door"))
-        {
-            r = g.GetComponent<Door>();
-            Destroy(g);
-        }
-        */
+        //esto es para guardar los items y enemigos de la sala
+        GameObject[] aux = GameObject.FindGameObjectsWithTag("Item");
+        GameObject[] aux2 = GameObject.FindGameObjectsWithTag("Enemies");
+        GameObject[] combined = new GameObject[aux.Length + aux2.Length];
+        Array.Copy(aux, combined, aux.Length);
+        Array.Copy(aux2, 0, combined, aux.Length, aux2.Length);
+        foreach (GameObject prefab in combined)
+            prefab.SetActive(false);
+        prefabsInRoom[actual.name] = combined;
+
         Room newRoom = (Room)map[nameofroom];
         nameofpreviousroom = actual.name;
         int n = actual.number;
         actual = newRoom;
         //actual.name = "room_" + map.Count;
-        actual.n_enemies = 0;
-        
+        actual.n_enemies = newRoom.n_enemies;
+        //activo los prefabs que estan en la habitacion
+        if((GameObject[])prefabsInRoom[actual.name] != null)
+        {
+            foreach (GameObject g in (GameObject[])prefabsInRoom[actual.name])
+                g.SetActive(true);
+        }      
         gameObject.GetComponent<RoomLevel>().spawnDoors(door, n);//cargo las puertas de nuevo
         Transform newPlayerPos = null;
-      /*  foreach (GameObject g in GameObject.FindGameObjectsWithTag("Door"))
-        {
-            if (g.GetComponent<Door>().place.Equals(p))
-                newPlayerPos = g.transform;
-        }*/
 
         switch (p)
         {
@@ -108,7 +112,6 @@ public class DungeonLevel : MonoBehaviour {
 
                 break;
         }
-      //  newPlayerPos.position = new Vector2(0,0);
 
         GameObject.FindGameObjectWithTag("Player").transform.position = newPlayerPos.position;
 
@@ -159,8 +162,11 @@ public class DungeonLevel : MonoBehaviour {
         {
             if (temporal_doors >= n_salas - n_salascreadas)
             {//si una sala tiene mas de una puerta hay que añadir las salas restantes sin puerta(al menos una, por donde ha venido)              
+                System.Random r = new System.Random();
+                int enemies = r.Next(1, n_salascreadas);
 
-                Room newRoom = new Room("room_" + map.Count, 0, 1, (map.Count == 0) ? true : false, ((map.Count + 1 == gameManager.N_salas)) ? true : false, gameManager.currentLevel, map.Count);
+                Room newRoom = new Room("room_" + map.Count, enemies, 1, (map.Count == 0) ? true : false, ((map.Count + 1 == gameManager.N_salas)) ? true : false, gameManager.currentLevel, map.Count);
+                oneDoorMap["room_" + map.Count] = newRoom;
                 map["room_" + map.Count] = newRoom;
                 temporal_doors += 1;
                 n_salascreadas += 1;
@@ -173,8 +179,10 @@ public class DungeonLevel : MonoBehaviour {
                 while ((n + temporal_doors) > gameManager.N_salas + gameManager.N_salas - 2)
                 {
                     n = r.Next(1, max_doors+1);
+
                 }
-                Room newRoom = new Room("room_" + map.Count, 0, n, (map.Count == 0) ? true : false, false, gameManager.currentLevel, map.Count);
+                int enemies = r.Next(1, n_salascreadas+1);
+                Room newRoom = new Room("room_" + map.Count, enemies, n, (map.Count == 0) ? true : false, false, gameManager.currentLevel, map.Count);
                 temporal_doors += n;
                 if (map.Count == 0)
                 {
@@ -183,15 +191,21 @@ public class DungeonLevel : MonoBehaviour {
                     actual.n_enemies = 0;
                     actual.n_doors = n;
                     actual.level = gameManager.currentLevel;
+                    actual.number = 0;
                 }
+                if (n==1)//si solo tiene una puerta
+                    oneDoorMap["room_" + map.Count] = newRoom;
+                else
+                    multipleDoorMap["room_" + map.Count] = newRoom;
+                map["room_" + map.Count] = newRoom;
                 n_salascreadas += 1;
                 previousN= n;
-                map["room_" + map.Count] = newRoom;
+                
             }
            
         }
  
-            
+  
         loadLevel = !loadLevel;
         
     }
@@ -205,6 +219,7 @@ public class DungeonLevel : MonoBehaviour {
         {
   //         aqui hago el spawn de puertas
             gameObject.GetComponent<RoomLevel>().spawnDoors(null,1000);
+
             loadLevel = !loadLevel;
         }
  
@@ -241,5 +256,10 @@ public class Room
         isLast = last;
         level = l;
         number = numberofroom;
+    }
+
+    public int Number()
+    {
+        return number;
     }
 }

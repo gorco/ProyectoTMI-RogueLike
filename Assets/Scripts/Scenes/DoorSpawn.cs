@@ -12,6 +12,8 @@ public class DoorSpawn : MonoBehaviour {
     [SerializeField]
     Door newDoor;
     DungeonLevel level;
+    EnemySpawn chanchan;
+    int countOfMultipleRoomsFilled = 0;
 
     bool[] spawns = { false, false, false, false };//puertas activadas
 
@@ -19,19 +21,28 @@ public class DoorSpawn : MonoBehaviour {
     void Start()
     {
         level = gameObject.GetComponent<DungeonLevel>();
-
+        if(level.multipleDoorMap.ContainsKey("room_"+0))
+            countOfMultipleRoomsFilled = 1;
     }
 
 
     internal void selectDoor(int num_doors, Door door, int number)
     {
-        if(door != null && level.salasCreadas.ContainsKey(door.nameofnextroom))
+        int auxiliar = 0;
+        foreach(Room room in level.multipleDoorMap.Values)
+        {
+            if (num_doors == room.n_doors)
+                auxiliar += 1;
+        }
+        countOfMultipleRoomsFilled = auxiliar;
+            //si paso por una puerta y ya se ha creado la sala
+            if (door != null && level.salasCreadas.ContainsKey(door.nameofnextroom))
         {  //desactivo todas las puertas
             foreach (GameObject g in GameObject.FindGameObjectsWithTag("Door"))
             {
                 g.SetActive(false);
             }
-
+            //habilito las puertas de esa sala
             Door[] doorsFromRoom = (Door[])level.salasCreadas[door.nameofnextroom];
             foreach(Door d in doorsFromRoom)
             {
@@ -84,15 +95,26 @@ public class DoorSpawn : MonoBehaviour {
                 //level.ocupadas[level.Actual.number] = true;//marco la sala ocupada
                 //level.Actual.n_doors -= 1;
             }
+            foreach (GameObject prefab in (GameObject[])level.prefabsInRoom[door.thisroom])
+            {
+                if (prefab != null)
+                    prefab.SetActive(true);
+            }
+
         }
         else
-        {
+        {//si no he creado ninguna sala
             if (level.ocupadas.Count == 0)
             {
                 for (int g = 0; g < level.map.Count; g++)
                 {
-                    level.ocupadas[g] = false;
+                    level.ocupadas[g] = 0;//todas las salas tienen 0 puertas construidas
                 }
+                /*foreach (Room room in level.multipleDoorMap.Values)
+                {
+                    level.ocupadas[room.number] = (int)level.ocupadas[room.number] + 1;
+                }*/
+               // level.ocupadas[0] = 1;
             }
             //desactivo todas las puertas
             foreach (GameObject g in GameObject.FindGameObjectsWithTag("Door"))
@@ -100,6 +122,9 @@ public class DoorSpawn : MonoBehaviour {
                 g.SetActive(false);
             }
             Door[] createdDoors = new Door[4];
+            //meto los objetos/enemigos
+            chanchan = gameObject.GetComponent<EnemySpawn>();
+            chanchan.spawn();
             //inicializo las habitaciones libres sin puerta
             for (int b = 0; b < spawns.Length; b++)
                 spawns[b] = false;
@@ -144,14 +169,16 @@ public class DoorSpawn : MonoBehaviour {
                 newDoor.gameObject.SetActive(true);
                 level.doors[0] = newDoor;
                 Debug.Log("Puerta en " + newDoor.ToString());
-                level.ocupadas[level.Actual.number] = true;//marco la sala ocupada
+                level.ocupadas[level.Actual.number] = (int)level.ocupadas[level.Actual.number]+1;//marco la sala ocupada añadiendo uno al contador de puertas que la referencian
+                
                 //level.Actual.n_doors -= 1;
                 num_doors--;
                 createdDoors[door.place] = newDoor;
             }
-
+            int ifIsZero = 0;
+            int newIndex = 0 ;
             //necesito crear el resto de puertas de la sala con n_doors
-            for (int i = 0; i < num_doors/*level.Actual.n_doors-1*/; ++i)
+            for (int i = 0; i < num_doors; ++i)
             {
                 System.Random r = new System.Random();
                 int n = r.Next(0, 4);
@@ -161,45 +188,62 @@ public class DoorSpawn : MonoBehaviour {
                    // Debug.Log(n);
                 }
                 //escojo el indice de la siguiente sala a generar
-                int j = r.Next(level.map.Count);
-                level.ocupadas[0] = true;
-                if ((bool)level.ocupadas[j] == true)
-                    j = choosePosition(j);
-                level.ocupadas[j] = true;
+                if (level.multipleDoorMap.ContainsKey("room_" + 0) && level.Actual.number == 0)
+                {
+                    ifIsZero += 1;
+                    level.ocupadas[0] = (int)level.ocupadas[0] + 1;//aumento en uno las puertas ocupadas
+                    newIndex = ifIsZero;
+                }
+                else
+                {
+                    newIndex = choosePosition();
+                    level.ocupadas[newIndex] = (int)level.ocupadas[newIndex] + 1;//aumento en uno las puertas ocupadas
+                }
+                
+
+                // int j = r.Next(level.map.Count);
+                //level.ocupadas[0] = 1;
+                /*  if ((int)level.ocupadas[j]-1 > num_doors )
+                  {
+                      level.ocupadas[j] = (int)level.ocupadas[j] + 1;
+                  }
+                  else
+                      j = choosePosition(j,number);
+                  level.ocupadas[j] = (int)level.ocupadas[j] + 1;*/
                 //creo las nuevas puertas en la posicion n
                 //y el la nextroom j
                 switch (n)
                 {
                     case 0:
                         newDoor = level.transform.FindChild("DoorNorth").gameObject.GetComponent<Door>();
-                        newDoor.nameofnextroom = "room_" + j;
+                        newDoor.nameofnextroom = "room_" + newIndex;
                         newDoor.thisroom = level.Actual.name;
-                        newDoor.next_room = j;//movida porque hay que poner el indice de actual.name
+                        newDoor.next_room = newIndex;//movida porque hay que poner el indice de actual.name
                         newDoor.place = n;
                         newDoor.enabled = true;
                         break;
                     case 1:
                         newDoor = level.transform.FindChild("DoorEast").gameObject.GetComponent<Door>();
-                        newDoor.nameofnextroom = "room_" + j;
+                        newDoor.nameofnextroom = "room_" + newIndex;
                         newDoor.thisroom = level.Actual.name;
-                        newDoor.next_room = j;//movida porque hay que poner el indice de actual.name
+                        newDoor.next_room = newIndex;//movida porque hay que poner el indice de actual.name
                         newDoor.place = n;
                         newDoor.enabled = true;
                         break;
                     case 2:
                         newDoor = level.transform.FindChild("DoorSouth").gameObject.GetComponent<Door>();
-                        newDoor.nameofnextroom = "room_" + j;
+                        newDoor.nameofnextroom = "room_" + newIndex;
                         newDoor.thisroom = level.Actual.name;
-                        newDoor.next_room = j;//movida porque hay que poner el indice de actual.name
+                        newDoor.next_room = newIndex;//movida porque hay que poner el indice de actual.name
                         newDoor.place = n;
                         newDoor.enabled = true;
                         break;
                     case 3:
                         //level.transform.FindChild("DoorWestEast").gameObject.SetActive(true);
                         newDoor = level.transform.FindChild("DoorWest").gameObject.GetComponent<Door>();
-                        newDoor.nameofnextroom = "room_" + j;
+                        newDoor.nameofnextroom = "room_" + newIndex;
                         newDoor.thisroom = level.Actual.name;
-                        newDoor.next_room = j;//movida porque hay que poner el indice de actual.name
+                        newDoor.next_room = newIndex;//movida porque hay que poner el indice de actual.name
                         newDoor.place = n;
                         newDoor.enabled = true;
                         break;
@@ -221,7 +265,7 @@ public class DoorSpawn : MonoBehaviour {
         }
 
 
-
+    
 
     }
     /*
@@ -330,22 +374,42 @@ public class DoorSpawn : MonoBehaviour {
         }
     }
     */
-    private int choosePosition(int n)
+    private int choosePosition()
     {
-        int x = 0;
-        while (x < level.map.Count)
+        Room aux = null;
+        System.Random r = new System.Random();
+        int j = 0;
+        bool encontrado = false;
+        while (encontrado == false)
         {
-            if ((bool)level.ocupadas[x] == true)
-                x++;
-            else
+            if (countOfMultipleRoomsFilled == level.multipleDoorMap.Count)
             {
-                n = x;
-                break;
+                if(level.oneDoorMap.ContainsKey("room_"+j))
+                {
+                    aux = (Room)level.oneDoorMap["room_" + j];
+                    if (aux.n_doors > (int)level.ocupadas[j])//si la sala tiene mas puertas que las que se han creado aun
+                        encontrado = true;
+                    else
+                        j = r.Next(level.map.Count);
+                }
             }
+            else if (level.multipleDoorMap.ContainsKey("room_" + j))
+                {
+                    aux = (Room)level.multipleDoorMap["room_" + j];
+                    if (aux.n_doors > (int)level.ocupadas[j])//si la sala tiene mas puertas que las que se han creado aun
+                    {
+                        encontrado = true;
+                  //  if(aux.n_doors == (int)level.ocupadas[j]+1)
+                      //  countOfMultipleRoomsFilled += 1;
+                    }
+                    else
+                        j = r.Next(level.map.Count);
+                }
+            else
+                j = r.Next(level.map.Count);
 
         }
-
-        return n;
+        return j;
     }
 
 
