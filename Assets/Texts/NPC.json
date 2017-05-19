@@ -1,4 +1,29 @@
 ﻿{
+	"intro":{
+		"root": {
+			"type": "dialog",
+			"fragments": [{
+				"tag": "Voz en off",
+				"character": "NPC",
+				"msn": "Bienvenido, supongo que te preguntarás dónde estás y quién soy yo"
+			},
+			{
+				"tag": "Voz en off",
+				"character": "NPC",
+				"msn": "Te he seleccionado como uno de los mejores sujetos, espero que no me falles"
+			},
+			{
+				"tag": "Voz en off",
+				"character": "NPC",
+				"msn": "Pero no hay tiempo, de momento preocupate por avanzar en esta mazmorra"
+			},
+			{
+				"tag": "Voz en off",
+				"character": "NPC",
+				"msn": "Poco a poco se irán desvelando los misterios, pero ahora mismo tengo que hacerme la comida"
+			}]
+		},
+	},
 	"npc":{
 		"root":{
 			"type": "fork",
