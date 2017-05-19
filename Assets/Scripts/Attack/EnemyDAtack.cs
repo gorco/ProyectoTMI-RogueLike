@@ -13,9 +13,10 @@ public class EnemyDAtack : MonoBehaviour {
 
     public LifeHero lifeH;
 
-    private Vector2 posPlayer;
-    private bool visto = false; //Indica si el enemigo ve al jugador
-    private Vector2 posInicial; 
+    public Vector3 posPlayer;
+    bool lanzar; //Indica si el enemigo ve al jugador
+    private Vector3 posInicial;
+    private float launch = 0.0f;
 
 
     // Use this for initialization
@@ -23,35 +24,58 @@ public class EnemyDAtack : MonoBehaviour {
     {
         lifeH = new LifeHero();
         posInicial = arma.transform.position;
+        lanzar = false;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if (visto == true)
+        Debug.Log("Valor de visto "+lanzar);
+        if (lanzar == true)
         {
-           
-            arma.transform.position = Vector2.MoveTowards(arma.transform.position, posPlayer, Time.deltaTime);
+            arma.transform.Translate(posPlayer*Time.deltaTime);
             
-            if ((Vector2)arma.transform.position == posPlayer)
-            {
-                arma.transform.position = posInicial;
-                visto = false;
-            }
         }
-           
+
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("HeroImage"))
+        if (collision.CompareTag("HeroImage") && !lanzar)
         {
-            Debug.Log("He visto al enemigo. Voy a disparar");
-            posPlayer = player.position;
-            visto = true;
+            posPlayer = (player.position - arma.transform.position);
+            
+            Debug.Log("Estoy entrando y no sé por qué");
+            lanzar = true;
+
         }
 
     }
 
-    
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+       
+        if (collision.CompareTag("HeroImage") && !lanzar)
+        {
+            while (launch < 2.0)
+            {
+                launch += Time.deltaTime;
+            }
+            
+                lanzar = true;
+                launch = 0.0f;
+                posPlayer = (player.position - arma.transform.position);
+            
+
+        }
+    }
+
+    public void setVisto()
+    {
+        Debug.Log("Antes: "+lanzar);
+        lanzar = false;
+        Debug.Log("Cambio a "+ lanzar);
+    }
+
+
 }

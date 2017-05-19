@@ -45,8 +45,7 @@ public class HeroAttack : MonoBehaviour {
         {
             Debug.Log("Hecho el ataque");
             lifeE.quitaVida(danioHero);
-            //lifeE.life -= danioHero;
-            //Debug.Log("He hecho daño. Ahora tiene " + lifeE.life);
+            
         }
     }
 

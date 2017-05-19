@@ -16,25 +16,23 @@ public class ArmaArrojadiza : MonoBehaviour {
 
         lH = new LifeHero();
         eda = new EnemyDAtack();
-        posIni = transform.position;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
-	}
-
-    private void OnTriggerEnter2D(Collider2D collision)
-    {
-        if (collision.CompareTag("HeroImage"))
-        {
-            lH.quitaVida(danioArma);
-            
-            transform.position = posIni;
-            
-        }
         
+    }
 
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        if (collision.CompareTag("HeroImage") || collision.CompareTag("wall"))
+        {
+            eda.setVisto();
+            if (collision.CompareTag("HeroImage"))
+                lH.quitaVida(danioArma);
+
+            transform.position = posIni;            
+        }
     }
 
     public void setDanioArma(float danArma)
