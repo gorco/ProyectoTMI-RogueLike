@@ -7,7 +7,7 @@ public class ArmaArrojadiza : MonoBehaviour {
     private LifeHero lH;
     public float danioArma = 3;
     //public Transform player;
-    private EnemyDAtack eda;
+    //private DistanceAttack da;
     Vector2 posIni;
 
 
@@ -15,7 +15,8 @@ public class ArmaArrojadiza : MonoBehaviour {
 	void Start () {
 
         lH = new LifeHero();
-        eda = new EnemyDAtack();
+       // da = new DistanceAttack();
+        posIni = transform.position;
 	}
 	
 	// Update is called once per frame
@@ -27,7 +28,8 @@ public class ArmaArrojadiza : MonoBehaviour {
     {
         if (collision.CompareTag("HeroImage") || collision.CompareTag("wall"))
         {
-            eda.setVisto();
+          
+            gameObject.GetComponentInParent<DistanceAttackEnemy>().setDisparoFalse();
             if (collision.CompareTag("HeroImage"))
                 lH.quitaVida(danioArma);
 
