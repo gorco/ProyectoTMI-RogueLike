@@ -17,6 +17,7 @@ public class DistanceAttackEnemy : MonoBehaviour {
         posIni = arma.transform.position;
         disparo = false;
         time = 0.0f;
+        player = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
     // Update is called once per frame
@@ -26,11 +27,13 @@ public class DistanceAttackEnemy : MonoBehaviour {
         {
             arma.Translate(posPlayer * Time.deltaTime);
         }
+        if (player == null)
+            player = GameObject.FindGameObjectWithTag("Player").transform;
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("HeroImage") && !disparo)
+        if (collision.CompareTag("Player") && !disparo)
         {
             posPlayer = (player.position - arma.transform.position);
 
@@ -41,7 +44,7 @@ public class DistanceAttackEnemy : MonoBehaviour {
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.CompareTag("HeroImage") && !disparo)
+        if (collision.CompareTag("Player") && !disparo)
         {
             time += Time.deltaTime;
             if (time>=recarga)

@@ -20,12 +20,14 @@ public class EnemySpawn : MonoBehaviour {
         dungeon = GameObject.FindGameObjectWithTag("Room").GetComponent<DungeonLevel>();
         if (dungeon != null)
         {
-            while (count < dungeon.Actual.n_enemies)
+            while (count < dungeon.Actual.n_enemies+dungeon.Actual.n_items)
             {
+               //temporal
                 System.Random r = new System.Random();
                 int n = r.Next(spawnLocations.Length-1);
+                int j = r.Next(whatSpawnPrefab.Length - 1);
                 Debug.Log("creo coso en "+n);
-                whatSpawnClone = Instantiate(whatSpawnPrefab[0], spawnLocations[n].transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;
+                whatSpawnClone = Instantiate(whatSpawnPrefab[j], spawnLocations[n].transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;
                 whatSpawnClone.SetActive(true);
                 count++;
             }

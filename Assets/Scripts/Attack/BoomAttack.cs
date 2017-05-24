@@ -24,7 +24,7 @@ public class BoomAttack : MonoBehaviour {
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("HeroImage"))
+        if (collision.CompareTag("Player"))
         {
            // Debug.Log("Vida antes: " + lifeH.life);
             if (tipo == "muerte")

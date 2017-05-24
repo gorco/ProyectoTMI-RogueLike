@@ -166,7 +166,7 @@ public class DungeonLevel : MonoBehaviour {
                 System.Random r = new System.Random();
                 int enemies = r.Next(1, n_salascreadas);
 
-                Room newRoom = new Room("room_" + map.Count, enemies, 1, (map.Count == 0) ? true : false, ((map.Count + 1 == gameManager.N_salas)) ? true : false, gameManager.currentLevel, map.Count);
+                Room newRoom = new Room("room_" + map.Count, enemies,map.Count, 1, (map.Count == 0) ? true : false, ((map.Count + 1 == gameManager.N_salas)) ? true : false, gameManager.currentLevel, map.Count);
                 oneDoorMap["room_" + map.Count] = newRoom;
                 map["room_" + map.Count] = newRoom;
                 temporal_doors += 1;
@@ -177,16 +177,16 @@ public class DungeonLevel : MonoBehaviour {
                 System.Random r = new System.Random(); 
                 int n = r.Next(1, max_doors+1);
                 if (n == previousN && (n+1 <= max_doors)) n += 1;
-                while ((n + temporal_doors) > gameManager.N_salas + gameManager.N_salas - 2)
+               /* while ((n + temporal_doors) > gameManager.N_salas + gameManager.N_salas - 2)
                 {
 
                     n = r.Next(1, max_doors+1);
 
-                }
+                }*/
                 int enemies = r.Next(1, n_salascreadas+1);
                 while(temporal_doors+n > gameManager.N_salas - n_salascreadas)
                     n = r.Next(1, gameManager.N_salas - n_salascreadas);
-                Room newRoom = new Room("room_" + map.Count, enemies, n, (map.Count == 0) ? true : false, false, gameManager.currentLevel, map.Count);
+                Room newRoom = new Room("room_" + map.Count, enemies,map.Count , n, (map.Count == 0) ? true : false, false, gameManager.currentLevel, map.Count);
                 if (map.Count == 0)
                 {
                     actual = newRoom;
@@ -244,18 +244,20 @@ public class Room
     public string name;
     public int n_enemies = 3;
     public int n_doors;
+    public int n_items;
     bool isEnabled;
     public bool isLast;
     public GameManager.Dungeon level;
     public int number;
 
 
-    public Room(string n, int enem, int door, bool first, bool last, GameManager.Dungeon l, int numberofroom)
+    public Room(string n, int enem, int items, int door, bool first, bool last, GameManager.Dungeon l, int numberofroom)
     {
         name = n;
         n_enemies = enem;
         n_doors = door;
         isEnabled = first;
+        n_items = items;
         isLast = last;
         level = l;
         number = numberofroom;
