@@ -10,9 +10,15 @@ public class DoorSpawn : MonoBehaviour {
     int count;
     int previousPoint = 0;
     int[] place = new int[4];
+    string s;
     public Transform[] spawnLocations;
     [SerializeField]
     Door newDoor;
+    DoorData doorToAppend = new DoorData();
+    DoorData doorToAppend1 = new DoorData();
+    DoorData doorToAppend2 = new DoorData();
+    DoorData doorToAppend3 = new DoorData();
+
     DungeonLevel level;
     EnemySpawn chanchan;
     int countOfMultipleRoomsFilled = 0;
@@ -31,60 +37,141 @@ public class DoorSpawn : MonoBehaviour {
     {
         Door nuevo = null;
         XmlDocument doc = new XmlDocument();
-  /*      try
+        try
         {
             doc.Load(Application.dataPath + "/Scripts/Scenes/Nodes.xml");
         }
         catch (XmlException e)
         {
             throw new XmlException("Fallo en la escritura del fichero: ", e);
-        }*/
-        System.Xml.Serialization.XmlSerializer writer =
-            new System.Xml.Serialization.XmlSerializer(typeof(DoorData));
+        }
+        DoorData[] auxiliar = null;
+        auxiliar = (DoorData[])level.salasCreadas[nameofnextroom];
+        string s = null;
+        foreach (DoorData door in auxiliar)
+        {
+            if (door != null && !level.doorsSaved.ContainsKey(door.thisroom))
+            {
+                s = door.thisroom; 
+                //XmlNode root = doc.CreateElement("DoorsData");
+                //doc.AppendChild(root);
+                XmlNode root =
+                doc.SelectSingleNode("DoorsData");
+                XmlNode rootNode = doc.CreateElement("DoorData");
+                XmlAttribute attribute = doc.CreateAttribute("nameofnextroom");
+                attribute.Value = door.nameofnextroom;
+                rootNode.Attributes.Append(attribute);
+                XmlAttribute attribute2 = doc.CreateAttribute("thisroom");
+                attribute2.Value = door.thisroom;
+                rootNode.Attributes.Append(attribute2);
+                XmlAttribute attribute3 = doc.CreateAttribute("next_room");
+                attribute3.Value = door.next_room.ToString();
+                rootNode.Attributes.Append(attribute3);
+                XmlAttribute attribute4 = doc.CreateAttribute("place");
+                attribute4.Value = door.place.ToString();
+                rootNode.Attributes.Append(attribute4);
+                root.AppendChild(rootNode);
+                doc.Save(Application.dataPath + "/Scripts/Scenes/Nodes.xml");
+ 
 
-        System.IO.StreamWriter file = new System.IO.StreamWriter(
-            Application.dataPath + "/Scripts/Scenes/Nodes.xml");
-        DoorData[] auxiliar = (DoorData[])level.salasCreadas[nameofnextroom];
+            }
+        }
+        level.doorsSaved.Add(s, true);
+        doc.Save(Application.dataPath + "/Scripts/Scenes/Nodes.xml");
+
+
+
+        /*System.Xml.Serialization.XmlSerializer writer =
+          new System.Xml.Serialization.XmlSerializer(typeof(DoorData));
+        
+        System.IO.StreamWriter file;
+        if (System.IO.File.Exists(Application.dataPath + "/Scripts/Scenes/Nodes.xml"))
+        {
+            file = new System.IO.StreamWriter(Application.dataPath + "/Scripts/Scenes/Nodes.xml", append: true);
+        }
+        else
+        {
+            file = new System.IO.StreamWriter(Application.dataPath + "/Scripts/Scenes/Nodes.xml");
+        }
+            
+        string s = nameofnextroom;
+        DoorData[] auxiliar = null; //(DoorData[])level.salasCreadas.Values;
+//        auxiliar = (DoorData[])level.salasCreadas.Values;
+        auxiliar = (DoorData[])level.salasCreadas[nameofnextroom];
         foreach(DoorData door in auxiliar)
             writer.Serialize(file, door);
         file.Close();
-        
+        */
+
     }
 
 
-    public void loading(bool isOrganic)
+    public void loading(string room)
     {
-        DoorData nuevo = null;
+
         XmlDocument doc = new XmlDocument();
         try
         {
-            doc.Load(Application.dataPath + "/Scripts/Nodes.xml");
+            doc.Load(Application.dataPath + "/Scripts/Scenes/Nodes.xml");
 
         }
         catch (XmlException e)
         {
             throw new XmlException("Fallo en la lectura del fichero: ", e);
         }
-
-        System.Xml.Serialization.XmlSerializer reader = new System.Xml.Serialization.XmlSerializer(typeof(Door));
-        System.IO.StreamReader file = new System.IO.StreamReader(Application.dataPath + "/Scripts/Nodes.xml");
-        nuevo = new DoorData();
-        nuevo = (DoorData)reader.Deserialize(file);
-        DoorData[] temporalDoors;
-        if (level.salasCreadas.ContainsKey(nuevo.thisroom))
+        XmlNodeList nodos = doc.GetElementsByTagName("DoorData");
+        List<DoorData> newDoors = new List<DoorData>();
+        foreach (XmlElement nodo in nodos)
         {
-            temporalDoors = (DoorData[])level.salasCreadas[nuevo.thisroom];
-            DoorData[] combined = new DoorData[temporalDoors.Length + 1];
-            Array.Copy(temporalDoors, combined, temporalDoors.Length);
-            Array.Copy(temporalDoors, temporalDoors.Length, combined, temporalDoors.Length, temporalDoors.Length+1);
-            level.salasCreadas.Add(nuevo.thisroom, combined);
-        }
-        else
-        {
-            level.salasCreadas.Add(nuevo.thisroom, nuevo);
-        }
+            string thisroom = nodo.GetAttribute("thisroom");
+            if (thisroom == room)
+            {
+                string nameofnextroom = nodo.GetAttribute("nameofnextroom");
+                string nextroom = nodo.GetAttribute("next_room");
+                string place = nodo.GetAttribute("place");
+                DoorData door = new DoorData();
+                door.nameofnextroom = nameofnextroom;
+                door.thisroom = thisroom;
+                door.next_room = Int32.Parse(nextroom);
+                door.place = Int32.Parse(place);
+                newDoors.Add(door);
+            }
+            
 
-        
+        }
+        if (level.salasCreadas.ContainsKey(room))
+        {
+            level.salasCreadas.Remove(room);
+            level.salasCreadas.Add(room, newDoors.ToArray());
+        }
+            /* DoorData nuevo = null;
+         XmlDocument doc = new XmlDocument();
+
+         System.Xml.Serialization.XmlSerializer reader = new System.Xml.Serialization.XmlSerializer(typeof(DoorData));
+         System.IO.StreamReader file = new System.IO.StreamReader(Application.dataPath + "/Scripts/Scenes/Nodes.xml");
+
+         DoorData temporalDoors = new DoorData();
+        /* using (var sr = new System.IO.StreamReader(Application.dataPath + "/Scripts/Scenes/Nodes.xml"))
+         {
+             var xs = new System.Xml.Serialization.XmlSerializer(temporalDoors.GetType());
+             temporalDoors = (DoorsData)(xs.Deserialize(sr));
+         }*/
+
+        //if (level.salasCreadas.ContainsKey(room))
+        //{
+
+        /*  temporalDoors = (DoorData[])level.salasCreadas[room];
+          DoorData[] combined = new DoorData[temporalDoors.Length + 1];
+          Array.Copy(temporalDoors, combined, temporalDoors.Length);
+          Array.Copy(temporalDoors, temporalDoors.Length, combined, temporalDoors.Length, temporalDoors.Length+1);
+          level.salasCreadas.Add(nuevo.thisroom, combined);*/
+        //}
+        /* else
+         {
+             level.salasCreadas.Add(nuevo.thisroom, nuevo);
+         }*/
+
+
     }
 
 
@@ -104,7 +191,9 @@ public class DoorSpawn : MonoBehaviour {
             for (int i = 0; i < spawns.Length; i++)
                 spawns[i] = false;
             //habilito las puertas de esa sala
-            DoorData[] doorsFromRoom = (DoorData[])level.salasCreadas[door.nameofnextroom];
+            DoorData[] doorsFromRoom = null;
+            loading(door.nameofnextroom);//
+            doorsFromRoom = (DoorData[])level.salasCreadas[door.nameofnextroom];
             foreach(DoorData d in doorsFromRoom)
             {
                 
@@ -120,7 +209,11 @@ public class DoorSpawn : MonoBehaviour {
                             newDoor.thisroom = d.thisroom;
                             newDoor.next_room = d.next_room;//movida porque hay que poner el indice de actual.name
                             newDoor.place = 0;
-                            newDoor.enabled = true;
+                            doorToAppend.nameofnextroom = d.nameofnextroom;
+                            doorToAppend.thisroom = d.thisroom;
+                            doorToAppend.next_room = d.next_room;//movida porque hay que poner el indice de actual.name
+                            doorToAppend.place = 0;
+                            //newDoor.enabled = true;
                             break;
                         case 1:
                             newDoor = level.transform.FindChild("DoorEast").gameObject.GetComponent<Door>();
@@ -128,7 +221,12 @@ public class DoorSpawn : MonoBehaviour {
                             newDoor.thisroom = d.thisroom;
                             newDoor.next_room = d.next_room;//movida porque hay que poner el indice de actual.name
                             newDoor.place = 1;
-                            newDoor.enabled = true;
+                            doorToAppend1.nameofnextroom = d.nameofnextroom;
+                            doorToAppend1.thisroom = d.thisroom;
+                            doorToAppend1.next_room = d.next_room;//movida porque hay que poner el indice de actual.name
+                            doorToAppend1.place = 1;
+
+                            //newDoor.enabled = true;
                             break;
                         case 2:
                             newDoor = level.transform.FindChild("DoorSouth").gameObject.GetComponent<Door>();
@@ -136,7 +234,12 @@ public class DoorSpawn : MonoBehaviour {
                             newDoor.thisroom = d.thisroom;
                             newDoor.next_room = d.next_room;//movida porque hay que poner el indice de actual.name
                             newDoor.place = 2;
-                            newDoor.enabled = true;
+                            doorToAppend2.nameofnextroom = d.nameofnextroom;
+                            doorToAppend2.thisroom = d.thisroom;
+                            doorToAppend2.next_room = d.next_room;//movida porque hay que poner el indice de actual.name
+                            doorToAppend2.place = 2;
+
+                            //newDoor.enabled = true;
                             break;
                         case 3:
                             newDoor = level.transform.FindChild("DoorWest").gameObject.GetComponent<Door>();
@@ -145,7 +248,12 @@ public class DoorSpawn : MonoBehaviour {
                             newDoor.thisroom = d.thisroom;
                             newDoor.next_room = d.next_room;//movida porque hay que poner el indice de actual.name
                             newDoor.place = 3;
-                            newDoor.enabled = true;
+                            doorToAppend3.nameofnextroom = d.nameofnextroom;
+                            doorToAppend3.thisroom = d.thisroom;
+                            doorToAppend3.next_room = d.next_room;//movida porque hay que poner el indice de actual.name
+                            doorToAppend3.place = 3;
+
+                            //newDoor.enabled = true;
                             break;
                     }
                     spawns[newDoor.place] = true;//Marco como ocupada
@@ -172,18 +280,13 @@ public class DoorSpawn : MonoBehaviour {
                 {
                     level.ocupadas[g] = 0;//todas las salas tienen 0 puertas construidas
                 }
-                /*foreach (Room room in level.multipleDoorMap.Values)
-                {
-                    level.ocupadas[room.number] = (int)level.ocupadas[room.number] + 1;
-                }*/
-               // level.ocupadas[0] = 1;
             }
             //desactivo todas las puertas
             foreach (GameObject g in GameObject.FindGameObjectsWithTag("Door"))
             {
                 g.SetActive(false);
             }
-            Door[] createdDoors = new Door[4];
+            DoorData[] createdDoors = new DoorData[4];
             //meto los objetos/enemigos
             chanchan = gameObject.GetComponent<EnemySpawn>();
             chanchan.spawn();
@@ -193,8 +296,6 @@ public class DoorSpawn : MonoBehaviour {
 
             if (door != null)//calculo la puerta opuesta: 0:N, 1:E, 2:S, 3:W
             {
-                //metodaco chulo chulo chulaco
-                saving(newDoor.nameofnextroom);
                 switch (door.place)
                 {
                     case 0:
@@ -204,6 +305,10 @@ public class DoorSpawn : MonoBehaviour {
                         newDoor.next_room = number;//movida porque hay que poner el indice de actual.name
                         newDoor.place = 2;
                         newDoor.enabled = true;
+                        doorToAppend.nameofnextroom = level.nameofpreviousroom;
+                        doorToAppend.thisroom = level.Actual.name;
+                        doorToAppend.next_room = number;//movida porque hay que poner el indice de actual.name
+                        doorToAppend.place = 2;
                         break;
                     case 1:
                         newDoor = level.transform.FindChild("DoorWest").gameObject.GetComponent<Door>();
@@ -212,6 +317,10 @@ public class DoorSpawn : MonoBehaviour {
                         newDoor.next_room = number;//movida porque hay que poner el indice de actual.name
                         newDoor.place = 3;
                         newDoor.enabled = true;
+                        doorToAppend1.nameofnextroom = level.nameofpreviousroom;
+                        doorToAppend1.thisroom = level.Actual.name;
+                        doorToAppend1.next_room = number;//movida porque hay que poner el indice de actual.name
+                        doorToAppend1.place = 3;
                         break;
                     case 2:
                         newDoor = level.transform.FindChild("DoorNorth").gameObject.GetComponent<Door>();
@@ -220,6 +329,10 @@ public class DoorSpawn : MonoBehaviour {
                         newDoor.next_room = number;//movida porque hay que poner el indice de actual.name
                         newDoor.place = 0;
                         newDoor.enabled = true;
+                        doorToAppend2.nameofnextroom = level.nameofpreviousroom;
+                        doorToAppend2.thisroom = level.Actual.name;
+                        doorToAppend2.next_room = number;//movida porque hay que poner el indice de actual.name
+                        doorToAppend2.place = 0;
                         break;
                     case 3:
                         newDoor = level.transform.FindChild("DoorEast").gameObject.GetComponent<Door>();
@@ -228,6 +341,10 @@ public class DoorSpawn : MonoBehaviour {
                         newDoor.next_room = number;//movida porque hay que poner el indice de actual.name
                         newDoor.place = 1;
                         newDoor.enabled = true;
+                        doorToAppend3.nameofnextroom = level.nameofpreviousroom;
+                        doorToAppend3.thisroom = level.Actual.name;
+                        doorToAppend3.next_room = number;//movida porque hay que poner el indice de actual.name
+                        doorToAppend3.place = 1;
                         break;
                 }
                 spawns[newDoor.place] = true;//Marco como ocupada
@@ -238,8 +355,9 @@ public class DoorSpawn : MonoBehaviour {
 
                 //level.Actual.n_doors -= 1;
                 num_doors--;
-                createdDoors[door.place] = newDoor;
+                createdDoors[door.place] = doorToAppend;
             }
+
             int ifIsZero = 0;
             int newIndex = 0 ;
             //necesito crear el resto de puertas de la sala con n_doors
@@ -261,7 +379,7 @@ public class DoorSpawn : MonoBehaviour {
                 }
                 else
                 {
-                    newIndex = choosePosition();
+                    newIndex = choosePosition(createdDoors);
                     //level.ocupadas[newIndex] = (int)level.ocupadas[newIndex] + 1;//aumento en uno las puertas ocupadas
                     level.ocupadas[level.Actual.number] = (int)level.ocupadas[level.Actual.number] + 1;
                 }
@@ -278,6 +396,10 @@ public class DoorSpawn : MonoBehaviour {
                         newDoor.next_room = newIndex;//movida porque hay que poner el indice de actual.name
                         newDoor.place = n;
                         newDoor.enabled = true;
+                        doorToAppend.nameofnextroom = "room_" + newIndex;
+                        doorToAppend.thisroom = level.Actual.name;
+                        doorToAppend.next_room = newIndex;//movida porque hay que poner el indice de actual.name
+                        doorToAppend.place = n;
                         break;
                     case 1:
                         newDoor = level.transform.FindChild("DoorEast").gameObject.GetComponent<Door>();
@@ -286,6 +408,10 @@ public class DoorSpawn : MonoBehaviour {
                         newDoor.next_room = newIndex;//movida porque hay que poner el indice de actual.name
                         newDoor.place = n;
                         newDoor.enabled = true;
+                        doorToAppend1.nameofnextroom = "room_" + newIndex;
+                        doorToAppend1.thisroom = level.Actual.name;
+                        doorToAppend1.next_room = newIndex;//movida porque hay que poner el indice de actual.name
+                        doorToAppend1.place = n;
                         break;
                     case 2:
                         newDoor = level.transform.FindChild("DoorSouth").gameObject.GetComponent<Door>();
@@ -294,6 +420,10 @@ public class DoorSpawn : MonoBehaviour {
                         newDoor.next_room = newIndex;//movida porque hay que poner el indice de actual.name
                         newDoor.place = n;
                         newDoor.enabled = true;
+                        doorToAppend2.nameofnextroom = "room_" + newIndex;
+                        doorToAppend2.thisroom = level.Actual.name;
+                        doorToAppend2.next_room = newIndex;//movida porque hay que poner el indice de actual.name
+                        doorToAppend2.place = n;
                         break;
                     case 3:
                         //level.transform.FindChild("DoorWestEast").gameObject.SetActive(true);
@@ -303,12 +433,26 @@ public class DoorSpawn : MonoBehaviour {
                         newDoor.next_room = newIndex;//movida porque hay que poner el indice de actual.name
                         newDoor.place = n;
                         newDoor.enabled = true;
+                        doorToAppend3.nameofnextroom = "room_" + newIndex;
+                        doorToAppend3.thisroom = level.Actual.name;
+                        doorToAppend3.next_room = newIndex;//movida porque hay que poner el indice de actual.name
+                        doorToAppend3.place = n;
+
                         break;
-                } 
+                }
+                s = newDoor.thisroom;
                 newDoor.gameObject.SetActive(true);
                 place[i] = n;
                 spawns[n] = true;
-                createdDoors[n] = newDoor;
+                if (n == 0)
+                    createdDoors[n] = doorToAppend;
+                else if (n==1)
+                    createdDoors[n] = doorToAppend1;
+                else if (n == 2)
+                    createdDoors[n] = doorToAppend2;
+                else if (n == 3)
+                    createdDoors[n] = doorToAppend3;
+
                 if (level == null)
                     level = gameObject.GetComponent<DungeonLevel>();
                 if (door != null)
@@ -317,8 +461,10 @@ public class DoorSpawn : MonoBehaviour {
                     level.doors[i] = newDoor;
 
             }
+            //metodaco chulo chulo chulaco
+            
             level.salasCreadas[level.Actual.name] = createdDoors;
-
+            saving(s);
         }
 
 
@@ -431,11 +577,12 @@ public class DoorSpawn : MonoBehaviour {
         }
     }
     */
-    private int choosePosition()
+    private int choosePosition(DoorData[] createdDoors)
     {
         Room aux = null;
         System.Random r = new System.Random();
         int j = 0;
+        int i = 0;
         bool encontrado = false;
         int actualIndex = 1000;
         if (level.multipleDoorMap.ContainsKey(level.Actual.name))
@@ -445,6 +592,7 @@ public class DoorSpawn : MonoBehaviour {
         }
         while (encontrado == false)
         {
+            
             if (j == actualIndex)
                 j = r.Next(level.map.Count);
             else
@@ -476,7 +624,21 @@ public class DoorSpawn : MonoBehaviour {
                 }
                 else
                     j = r.Next(level.map.Count);
-
+                if (createdDoors != null)
+                {
+                    foreach(DoorData d in createdDoors)
+                    {
+                        if(d != null)
+                        {
+                            if (d.place == j)
+                            {
+                                encontrado = false;
+                                j = r.Next(level.map.Count);
+                            }
+                        }
+                            
+                    }
+                }
             }
         }
             

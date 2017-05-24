@@ -26,6 +26,7 @@ public class DungeonLevel : MonoBehaviour {
     public RoomTree<int, int> ocupadas = new RoomTree<int, int>();//salas que ya tienen puertas, cuantas tienen ocupadas
     public RoomTree<string, DoorData[]> salasCreadas = new RoomTree<string, DoorData[]>();//guardo las salas crafteadas
     public RoomTree<string, GameObject[]> prefabsInRoom = new RoomTree<string, GameObject[]>();//guardo enemigos y objetos en sala
+    public RoomTree<string, bool> doorsSaved = new RoomTree<string, bool>();//guardo las salas con puertas guardadas
     public bool loadLevel = false;
     public Door[] doors = new Door[4];
     GameObject room;
@@ -178,12 +179,14 @@ public class DungeonLevel : MonoBehaviour {
                 if (n == previousN && (n+1 <= max_doors)) n += 1;
                 while ((n + temporal_doors) > gameManager.N_salas + gameManager.N_salas - 2)
                 {
+
                     n = r.Next(1, max_doors+1);
 
                 }
                 int enemies = r.Next(1, n_salascreadas+1);
+                while(temporal_doors+n > gameManager.N_salas - n_salascreadas)
+                    n = r.Next(1, gameManager.N_salas - n_salascreadas);
                 Room newRoom = new Room("room_" + map.Count, enemies, n, (map.Count == 0) ? true : false, false, gameManager.currentLevel, map.Count);
-                temporal_doors += n;
                 if (map.Count == 0)
                 {
                     actual = newRoom;
@@ -202,7 +205,7 @@ public class DungeonLevel : MonoBehaviour {
                 previousN= n;
                 
             }
-           
+
         }
  
   
