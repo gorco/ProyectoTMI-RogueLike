@@ -1,7 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class EnemySpawn : MonoBehaviour {
+public class ItemSpawn : MonoBehaviour
+{
 
     [SerializeField]
     //int n_enemies;
@@ -18,12 +19,12 @@ public class EnemySpawn : MonoBehaviour {
     {
         count = 0;
         bool[] spawns = new bool[spawnLocations.Length];
-        for(int i = 0; i < spawns.Length; i ++)
+        for (int i = 0; i < spawns.Length; i++)
             spawns[i] = false;
         dungeon = GameObject.FindGameObjectWithTag("Room").GetComponent<DungeonLevel>();
         if (dungeon != null)
         {
-            while (count < dungeon.Actual.n_enemies)
+            while (count < dungeon.Actual.n_items)
             {
                 //temporal
                 System.Random r = new System.Random();
@@ -34,25 +35,21 @@ public class EnemySpawn : MonoBehaviour {
                 }
                 spawns[n] = true;
                 int j = r.Next(whatSpawnPrefab.Length - 1);
-                Debug.Log("creo coso en "+n);
+                Debug.Log("creo coso en " + n);
                 whatSpawnClone = Instantiate(whatSpawnPrefab[j], spawnLocations[n].transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;
-                if(whatSpawnClone.GetComponent<EnemyMovement>() != null)
-                {
-                    whatSpawnClone.GetComponent<EnemyMovement>().startPoint = spawnLocations[n].transform.FindChild("waypoint0").gameObject;
-                    whatSpawnClone.GetComponent<EnemyMovement>().endPoint = spawnLocations[n].transform.FindChild("waypoint1").gameObject;
-                }
                 whatSpawnClone.SetActive(true);
                 count++;
             }
         }
-        for(int b = 0; b < spawns.Length;b++)
+        for (int b = 0; b < spawns.Length; b++)
             spawns[b] = false;
-                    
+
     }
 
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start()
+    {
         dungeon = GameObject.FindGameObjectWithTag("Room").GetComponent<DungeonLevel>();
         /* count = 0;
          if(dungeon != null && dungeon.loadLevel)
@@ -78,7 +75,8 @@ public class EnemySpawn : MonoBehaviour {
     }
 
     // Update is called once per frame
-    void Update () {
+    void Update()
+    {
         if (dungeon == null)
             dungeon = GameObject.FindGameObjectWithTag("Room").GetComponent<DungeonLevel>();
 

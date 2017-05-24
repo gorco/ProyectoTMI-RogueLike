@@ -21,6 +21,7 @@ public class DoorSpawn : MonoBehaviour {
 
     DungeonLevel level;
     EnemySpawn chanchan;
+    ItemSpawn items;
     int countOfMultipleRoomsFilled = 0;
 
     bool[] spawns = { false, false, false, false };//puertas activadas
@@ -289,7 +290,9 @@ public class DoorSpawn : MonoBehaviour {
             DoorData[] createdDoors = new DoorData[4];
             //meto los objetos/enemigos
             chanchan = gameObject.GetComponent<EnemySpawn>();
+            items = gameObject.GetComponent<ItemSpawn>();
             chanchan.spawn();
+            items.spawn();
             //inicializo las habitaciones libres sin puerta
             for (int b = 0; b < spawns.Length; b++)
                 spawns[b] = false;

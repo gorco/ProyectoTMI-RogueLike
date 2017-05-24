@@ -152,6 +152,8 @@ public class DungeonLevel : MonoBehaviour {
         int temporal_doors = 0;//esto son las puertas totales del nivel creadas
         int n_salas = gameManager.N_salas;//numero de salas que hay
         int previousN = 0;
+        int doorsInMultipleRooms = 2;
+        int roomsOneDoor = 2;
         int n_salascreadas = 0;
         int max_doors = 0;
         if (gameManager.currentLevel == GameManager.Dungeon.Tutorial)
@@ -160,33 +162,43 @@ public class DungeonLevel : MonoBehaviour {
             max_doors = 3;
         else max_doors = 4;
         while (temporal_doors < gameManager.N_salas+gameManager.N_salas - 2)
-        {
-            if (temporal_doors >= n_salas - n_salascreadas)
-            {//si una sala tiene mas de una puerta hay que añadir las salas restantes sin puerta(al menos una, por donde ha venido)              
-                System.Random r = new System.Random();
-                int enemies = r.Next(1, n_salascreadas);
-
-                Room newRoom = new Room("room_" + map.Count, enemies,map.Count, 1, (map.Count == 0) ? true : false, ((map.Count + 1 == gameManager.N_salas)) ? true : false, gameManager.currentLevel, map.Count);
-                oneDoorMap["room_" + map.Count] = newRoom;
-                map["room_" + map.Count] = newRoom;
-                temporal_doors += 1;
-                n_salascreadas += 1;
-            }
-            else
+        {   if(gameManager.N_salas - roomsOneDoor-n_salascreadas >0)
             {
-                System.Random r = new System.Random(); 
-                int n = r.Next(1, max_doors+1);
-                if (n == previousN && (n+1 <= max_doors)) n += 1;
-               /* while ((n + temporal_doors) > gameManager.N_salas + gameManager.N_salas - 2)
+                System.Random r = new System.Random();
+                int n;
+                if (map.Count == 0)
+                    n = r.Next(1, max_doors + 1);
+                else n = r.Next(2, max_doors + 1);
+                if (n == 1)
+                    roomsOneDoor -= 1;
+                if (n == previousN && (n + 1 <= max_doors)) n += 1;
+              /*  while ((n + temporal_doors) > gameManager.N_salas + gameManager.N_salas - 2)
                 {
 
-                    n = r.Next(1, max_doors+1);
+                    n = r.Next(1, max_doors + 1);
 
                 }*/
-                int enemies = r.Next(1, n_salascreadas+1);
-                while(temporal_doors+n > gameManager.N_salas - n_salascreadas)
-                    n = r.Next(1, gameManager.N_salas - n_salascreadas);
-                Room newRoom = new Room("room_" + map.Count, enemies,map.Count , n, (map.Count == 0) ? true : false, false, gameManager.currentLevel, map.Count);
+                int enemies = r.Next(1, n_salascreadas + 1);
+                if (n > 2)
+                {
+                    if (n == 3)
+                        roomsOneDoor += 1;
+                    else if (n == 4)
+                        roomsOneDoor += 2;
+
+                }
+                int centinel = n;//por si cambia n
+                while (gameManager.N_salas + gameManager.N_salas - 2 < 2*n +temporal_doors)
+                {
+                    n = r.Next(2, gameManager.N_salas - roomsOneDoor+1);
+                }
+
+                if (n == 2)
+                    if (centinel == 3)
+                        roomsOneDoor -= 1;
+                    else if(n==4)
+                        roomsOneDoor -= 2;
+                Room newRoom = new Room("room_" + map.Count, enemies, map.Count, n, (map.Count == 0) ? true : false, false, gameManager.currentLevel, map.Count);
                 if (map.Count == 0)
                 {
                     actual = newRoom;
@@ -196,14 +208,40 @@ public class DungeonLevel : MonoBehaviour {
                     actual.level = gameManager.currentLevel;
                     actual.number = 0;
                 }
-                if (n==1)//si solo tiene una puerta
+                if (n == 1)//si solo tiene una puerta
                     oneDoorMap["room_" + map.Count] = newRoom;
                 else
                     multipleDoorMap["room_" + map.Count] = newRoom;
                 map["room_" + map.Count] = newRoom;
                 n_salascreadas += 1;
-                previousN= n;
-                
+                temporal_doors += n;
+                doorsInMultipleRooms += 1;
+                previousN = n;
+            }
+            /*if ((temporal_doors > n_salas - n_salascreadas)||(actual.n_doors == 4 && gameManager.currentLevel == GameManager.Dungeon.Tutorial))
+            {//si una sala tiene mas de una puerta hay que añadir las salas restantes sin puerta(al menos una, por donde ha venido)              
+                System.Random r = new System.Random();
+                int enemies = r.Next(1, n_salascreadas);
+
+                Room newRoom = new Room("room_" + map.Count, enemies,map.Count, 1, (map.Count == 0) ? true : false, ((map.Count + 1 == gameManager.N_salas)) ? true : false, gameManager.currentLevel, map.Count);
+                oneDoorMap["room_" + map.Count] = newRoom;
+                map["room_" + map.Count] = newRoom;
+                temporal_doors += 1;
+                n_salascreadas += 1;
+                roomsOneDoor -= 1;
+            }*/
+            else
+            {
+                System.Random r = new System.Random();
+                int enemies = r.Next(1, n_salascreadas);
+
+                Room newRoom = new Room("room_" + map.Count, enemies, map.Count, 1, (map.Count == 0) ? true : false, ((map.Count + 1 == gameManager.N_salas)) ? true : false, gameManager.currentLevel, map.Count);
+                oneDoorMap["room_" + map.Count] = newRoom;
+                map["room_" + map.Count] = newRoom;
+                temporal_doors += 1;
+                n_salascreadas += 1;
+                roomsOneDoor -= 1;
+
             }
 
         }
