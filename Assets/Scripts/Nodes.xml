@@ -3,31 +3,5 @@
 
  <Nodos>
 
-      <Organic nombre="Larva" info="El organismo evoluciona a Larva"  bonus= "0" cost= "15" sprite= "sprite"
-      locked="false" used = "false" next= "Bloque0" next1="Bloque0" />
-
-      <Organic nombre="Adaptacion" info="El organismo evoluciona más rápido, bonificación a la vida, armadura y ataque de +0.15."  bonus= "15" cost= "25" sprite= "sprite"
-      locked="false" used = "false" next= "Bloque0" next1="Bloque1" />   
-
-      <Organic nombre="Ventosas" info="Consigue desarrollar ventosas"  bonus= "20" cost= "35" sprite= "sprite"
-      locked="true" used = "false" next= "Bloque1" next1="Bloque2" /> 
-      
-      <Organic nombre="Paciente" info="El organismo se regenera"  bonus= "0" cost= "60" sprite= "sprite"
-      locked="true" used = "false" next= "Bloque1" next1="next1" />
-      
-      <Organic nombre="Alas" info="Consigue desarrollar alas, uso con [SPACE]"  bonus= "0" cost= "80" sprite= "sprite"
-      locked="true" used = "false" next= "Bloque1" next1="next1" />
-   
-      <Organic nombre="Puas" info="Desarrollo de púas, que pueden ser disparadas"  bonus= "0" cost= "120" sprite= "sprite"
-      locked="true" used = "false" next= "Bloque1" next1="Bloque2" />
-
-      <Organic nombre="Garras afiladas" info="Desarrollo de garras, aumento de ataque"  bonus= "0" cost= "120" sprite= "sprite"
-      locked="true" used = "false" next= "Bloque1" next1="next1" />
-
-      <Organic nombre="Agilidad felina" info="Aumenta la velocidad del organismo"  bonus= "0" cost= "120" sprite= "sprite"
-      locked="true" used = "false" next= "Bloque1" next1="next1" />
-   
-      <Cyborg nombre="nombre1" info="info"  bonus= "123" cost= "30" sprite= "sprite"
-      locked="locked" used = "used" next= "next" next1="next1" /> 
 
 </Nodos>
