@@ -287,6 +287,7 @@ public class Inventory : MonoBehaviour {
 			canvasGroup.alpha = 1f;
 			canvasGroup.interactable = true;
 			canvasGroup.blocksRaycasts = true;
+			updateStatsText();
 		} else if(!open && canvasGroup.alpha >= 0.5f)
 		{
 			this.enabled = false;
@@ -298,12 +299,14 @@ public class Inventory : MonoBehaviour {
 
 	public void updateStatsText()
 	{
-		int maxLife = 0;
-		int atk = 0;
-		int spdAtk = 0;
-		int def = 0;
-		int luc = 0;
-		int weight = 0;
+		LifeHero l = GameObject.Find("Player").GetComponent<LifeHero>();
+
+		int maxLife = l.baseMaxLife;
+		int atk = l.baseAttack;
+		float spdAtk = l.baseSpdAttack;
+		int def = l.baseDefense;
+		float luc = l.baseLuck;
+		float weight = l.baseWeight;
 
 		string stats = string.Empty;
 
@@ -338,10 +341,10 @@ public class Inventory : MonoBehaviour {
 
 		int maxLife = 0;
 		int atk = 0;
-		int speedAtk = 0;
+		float speedAtk = 0;
 		int def = 0;
-		int luc = 0;
-		int weight = 0;
+		float luc = 0;
+		float weight = 0;
 
 		for (int i = 0; i < equipmentSlots.Count; i++)
 		{

@@ -43,10 +43,10 @@ public class Item : MonoBehaviour {
 	public int life;
 	public int maxLife;
 	public int atk;
-	public int spdAtk;
+	public float spdAtk;
 	public int def;
-	public int luc;
-	public int weight;
+	public float luc;
+	public float weight;
 
 	public void Use ()
 	{

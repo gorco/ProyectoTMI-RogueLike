@@ -13,18 +13,24 @@ public class LifeHero : MonoBehaviour {
 	public float baseLuck = 0;
 	public float baseWeight = 0;
 
+	[SerializeField]
 	private int maxLife;
-    private int currentLife;
+	[SerializeField]
+	private int currentLife;
 
 	internal int getCurrentLife()
 	{
 		return currentLife;
 	}
-
+	[SerializeField]
 	private int attack;
+	[SerializeField]
 	private float spdAttack;
+	[SerializeField]
 	private int defense;
+	[SerializeField]
 	private float luck;
+	[SerializeField]
 	private float weight;
 
 	HeroAttack attackScript;

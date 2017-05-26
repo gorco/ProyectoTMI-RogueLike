@@ -16,32 +16,41 @@ public class EnemySpawn : MonoBehaviour {
 
     public void spawn()
     {
-        count = 0;
+		int lastSpawned = 0;
+		count = 0;
         bool[] spawns = new bool[spawnLocations.Length];
         for(int i = 0; i < spawns.Length; i ++)
             spawns[i] = false;
         dungeon = GameObject.FindGameObjectWithTag("Room").GetComponent<DungeonLevel>();
         if (dungeon != null)
         {
-            while (count < dungeon.Actual.n_items)
+            while (count < dungeon.Actual.n_enemies)
             {
                 //temporal
                 System.Random r = new System.Random();
-                int n = r.Next(spawnLocations.Length - 1);
-                while (spawns[n])
+                int n = r.Next(spawnLocations.Length);
+				int tries = 0;
+                while (tries < 20 && spawns[n])
                 {
-                    n = r.Next(spawnLocations.Length - 1);
+                    n = r.Next(spawnLocations.Length);
+					tries++;
                 }
                 spawns[n] = true;
-                int j = r.Next(whatSpawnPrefab.Length - 1);
-                Debug.Log("creo coso en "+n);
-                whatSpawnClone = Instantiate(whatSpawnPrefab[j], spawnLocations[n].transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;
-                if(whatSpawnClone.GetComponent<EnemyMovement>() != null)
-                {
-                    whatSpawnClone.GetComponent<EnemyMovement>().startPoint = spawnLocations[n].transform.FindChild("waypoint0").gameObject;
-                    whatSpawnClone.GetComponent<EnemyMovement>().endPoint = spawnLocations[n].transform.FindChild("waypoint1").gameObject;
-                }
-                whatSpawnClone.SetActive(true);
+				if (whatSpawnPrefab.Length > 0)
+				{
+					int j = r.Next(whatSpawnPrefab.Length );
+					j = j == lastSpawned ? (j + 1) % whatSpawnPrefab.Length : j;
+
+					lastSpawned = j;
+					whatSpawnClone = Instantiate(whatSpawnPrefab[j], spawnLocations[n].transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;
+					if (whatSpawnClone.GetComponent<EnemyMovement>() != null)
+					{
+						whatSpawnClone.GetComponent<EnemyMovement>().startPoint = spawnLocations[n].transform.FindChild("waypoint0").gameObject;
+						whatSpawnClone.GetComponent<EnemyMovement>().endPoint = spawnLocations[n].transform.FindChild("waypoint1").gameObject;
+					}
+					whatSpawnClone.SetActive(true);
+					
+				}
                 count++;
             }
         }

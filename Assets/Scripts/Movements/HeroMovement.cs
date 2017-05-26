@@ -4,9 +4,10 @@ using UnityEngine;
 using System;
 
 public class HeroMovement : MonoBehaviour {
-    public float speed = 10.0F; //Velocidad de movimiento
+
+	private float speed; //Velocidad de movimiento
+
     private int dir=1; //posición donde mira 1:arriba, 2: abajo, 3: dcha, 4: izda
-    public float peso = 0; //valor entre 0 y 120
 
 	public GameObject weapon;
 	public Sprite up;
@@ -21,6 +22,7 @@ public class HeroMovement : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
+		speed = 12;
 		sprite = GetComponent<SpriteRenderer>();
 	}
 	
@@ -78,7 +80,6 @@ public class HeroMovement : MonoBehaviour {
             dir = 2;
 			yDir = Mathf.FloorToInt(Input.GetAxis("Vertical"));
         }
-        setSpeedfromPeso(peso);
 
         transform.Translate(speed * Math.Abs(Input.GetAxis("Horizontal")) * Time.deltaTime * xDir, speed * Math.Abs(Input.GetAxis("Vertical"))*Time.deltaTime * yDir, 0);
         transform.Translate(speed * Math.Abs(Input.GetAxis("Horizontal")) * Time.deltaTime * xDir, speed * Math.Abs(Input.GetAxis("Vertical")) * Time.deltaTime * yDir, 0);
@@ -87,16 +88,18 @@ public class HeroMovement : MonoBehaviour {
 
     public void setSpeedfromPeso(float peso)
     {
-        float v = 12 - (peso / 150)*12;
+        float v = 12 - (peso / 100)*12;
 		setSpeed(v);
-    }
+	}
 
     public void setSpeed(float v)
     {
-        if (v > 12)
-            speed = 12;
+		speed = v;
+		if (v > 12)
+            this.speed = 12;
         if (v < 1)
-            speed = 1;
+			this.speed = 1;
+
     }
 
     

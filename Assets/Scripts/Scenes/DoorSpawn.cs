@@ -292,8 +292,10 @@ public class DoorSpawn : MonoBehaviour {
             //meto los objetos/enemigos
             chanchan = gameObject.GetComponent<EnemySpawn>();
             items = gameObject.GetComponent<ItemSpawn>();
+
             chanchan.spawn();
             items.spawn();
+
             //inicializo las habitaciones libres sin puerta
             for (int b = 0; b < spawns.Length; b++)
                 spawns[b] = false;

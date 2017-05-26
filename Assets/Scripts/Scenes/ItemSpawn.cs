@@ -28,13 +28,15 @@ public class ItemSpawn : MonoBehaviour
             {
                 //temporal
                 System.Random r = new System.Random();
-                int n = r.Next(spawnLocations.Length - 1);
-                while (spawns[n])
-                {
-                    n = r.Next(spawnLocations.Length - 1);
-                }
+                int n = r.Next(spawnLocations.Length );
+				int tries = 0;
+				while (tries < 20 && spawns[n])
+				{
+					n = r.Next(spawnLocations.Length );
+					tries++;
+				}
                 spawns[n] = true;
-                int j = r.Next(whatSpawnPrefab.Length - 1);
+                int j = r.Next(whatSpawnPrefab.Length );
                 Debug.Log("creo coso en " + n);
                 whatSpawnClone = Instantiate(whatSpawnPrefab[j], spawnLocations[n].transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;
                 whatSpawnClone.SetActive(true);
