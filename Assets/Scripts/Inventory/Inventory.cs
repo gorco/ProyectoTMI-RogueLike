@@ -207,6 +207,7 @@ public class Inventory : MonoBehaviour {
         MoveItem(slot.gameObject);
 		MoveItem(spSlot.gameObject);
 		updateStatsText();
+		CalcStats();
 	}
 
 	public void MoveItem(GameObject clicked)
@@ -333,7 +334,8 @@ public class Inventory : MonoBehaviour {
 
 	public void CalcStats()
 	{
-		//Player p = FindObjectOfType<Player>();
+		LifeHero p = FindObjectOfType<LifeHero>();
+
 		int maxLife = 0;
 		int atk = 0;
 		int speedAtk = 0;
@@ -355,7 +357,7 @@ public class Inventory : MonoBehaviour {
 			}
 		}
 
-		//p.SetStats(maxLife, str, def, dex, spd, luc);
+		p.updateStats(maxLife, atk, speedAtk, def, luc, weight, false);
 	}
 
 	public void SaveInventory()

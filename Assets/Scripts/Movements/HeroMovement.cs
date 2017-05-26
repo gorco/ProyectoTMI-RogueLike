@@ -87,13 +87,14 @@ public class HeroMovement : MonoBehaviour {
 
     public void setSpeedfromPeso(float peso)
     {
-        speed = 10 - (peso / 15);
+        float v = 12 - (peso / 150)*12;
+		setSpeed(v);
     }
 
     public void setSpeed(float v)
     {
-        if (v > 10)
-            speed = 10;
+        if (v > 12)
+            speed = 12;
         if (v < 1)
             speed = 1;
     }
