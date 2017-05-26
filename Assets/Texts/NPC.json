@@ -89,7 +89,8 @@
 			"next": "quest",
 			"event": {
 				"name": "generate random",
-				"var": "RandomNum"
+				"var": "RandomNum",
+				"value": true
 			}
 		},
 		"quest":{
@@ -123,14 +124,16 @@
 			"type": "event",
 			"event": {
 				"name": "active quest",
-				"var": "BlueQuest"
+				"var": "BlueQuest",
+				"value": true
 			}
 		},
 		"activeRed": {
 			"type": "event",
 			"event": {
 				"name": "active quest",
-				"var": "RedQuest"
+				"var": "RedQuest",
+				"value": true
 			}
 		},
 	},
