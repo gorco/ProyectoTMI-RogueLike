@@ -293,7 +293,7 @@ public class DoorSpawn : MonoBehaviour {
             chanchan = gameObject.GetComponent<EnemySpawn>();
             items = gameObject.GetComponent<ItemSpawn>();
             chanchan.spawn();
-            items.spawn();
+//            items.spawn();
             //inicializo las habitaciones libres sin puerta
             for (int b = 0; b < spawns.Length; b++)
                 spawns[b] = false;
@@ -508,14 +508,16 @@ public class DoorSpawn : MonoBehaviour {
         bool encontrado = false;
         foreach (Room auxi in level.multipleDoorMap.Values)
         {
-            rooms.Add(auxi);
+            if(auxi.n_doors != auxi.indexOfRooms.Count)
+                rooms.Add(auxi);
         }
         if (rooms.Contains(level.Actual))
             rooms.Remove(level.Actual);
         List<Room> allRooms = new List<Room>();
         foreach (Room auxi in level.map.Values)
         {
-            allRooms.Add(auxi);
+            if (auxi.n_doors != auxi.indexOfRooms.Count)
+                allRooms.Add(auxi);
         }
         if (allRooms.Contains(level.Actual))
             allRooms.Remove(level.Actual);

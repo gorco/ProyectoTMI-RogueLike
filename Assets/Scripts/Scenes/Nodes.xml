@@ -1,8 +1,4 @@
 ﻿<?xml version="1.0" encoding="UTF-8"?>
 <DoorsData>
-  <DoorData nameofnextroom="room_2" thisroom="room_0" next_room="2" place="0" />
-  <DoorData nameofnextroom="room_4" thisroom="room_0" next_room="4" place="1" />
-  <DoorData nameofnextroom="room_1" thisroom="room_0" next_room="1" place="2" />
-  <DoorData nameofnextroom="room_0" thisroom="room_1" next_room="0" place="0" />
-  <DoorData nameofnextroom="room_3" thisroom="room_1" next_room="3" place="3" />
+
 </DoorsData>
