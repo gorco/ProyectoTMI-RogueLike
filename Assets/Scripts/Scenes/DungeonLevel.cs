@@ -26,8 +26,10 @@ public class DungeonLevel : MonoBehaviour {
     public RoomTree<int, int> ocupadas = new RoomTree<int, int>();//salas que ya tienen puertas, cuantas tienen ocupadas
     public RoomTree<string, DoorData[]> salasCreadas = new RoomTree<string, DoorData[]>();//guardo las salas crafteadas
     public RoomTree<string, GameObject[]> prefabsInRoom = new RoomTree<string, GameObject[]>();//guardo enemigos y objetos en sala
+    public RoomTree<int, List<int>> roomsReferenced = new RoomTree<int, List<int>>();//en la habitación K hay una lista del numero de cada habitacion
     public RoomTree<string, bool> doorsSaved = new RoomTree<string, bool>();//guardo las salas con puertas guardadas
     public bool loadLevel = false;
+    public int totalDoors = 0;
     public Door[] doors = new Door[4];
     GameObject room;
     int p;
@@ -74,7 +76,6 @@ public class DungeonLevel : MonoBehaviour {
         foreach (GameObject prefab in combined)
             prefab.SetActive(false);
         prefabsInRoom[actual.name] = combined;
-
         Room newRoom = (Room)map[nameofroom];
         nameofpreviousroom = actual.name;
         int n = actual.number;
@@ -156,6 +157,8 @@ public class DungeonLevel : MonoBehaviour {
         int roomsOneDoor = 2;
         int n_salascreadas = 0;
         int max_doors = 0;
+        int isFirstOneDoor = 0;
+        totalDoors = gameManager.N_salas + gameManager.N_salas - 2;
         if (gameManager.currentLevel == GameManager.Dungeon.Tutorial)
             max_doors = 4;
         else if (gameManager.currentLevel == GameManager.Dungeon.Level1)
@@ -166,18 +169,24 @@ public class DungeonLevel : MonoBehaviour {
             {
                 System.Random r = new System.Random();
                 int n;
+
                 if (map.Count == 0)
+                {
                     n = r.Next(1, max_doors + 1);
+                    isFirstOneDoor =((n == 1) ? 1 : 0);
+                }
+                    
                 else n = r.Next(2, max_doors + 1);
                 if (n == 1)
                     roomsOneDoor -= 1;
                 if (n == previousN && (n + 1 <= max_doors)) n += 1;
-              /*  while ((n + temporal_doors) > gameManager.N_salas + gameManager.N_salas - 2)
-                {
+                /*  while ((n + temporal_doors) > gameManager.N_salas + gameManager.N_salas - 2)
+                  {
 
-                    n = r.Next(1, max_doors + 1);
+                      n = r.Next(1, max_doors + 1);
 
-                }*/
+                  }*/
+
                 int enemies = r.Next(1, n_salascreadas + 1);
                 if (n > 2)
                 {
@@ -188,9 +197,10 @@ public class DungeonLevel : MonoBehaviour {
 
                 }
                 int centinel = n;//por si cambia n
-                while (gameManager.N_salas + gameManager.N_salas - 2 < 2*n +temporal_doors)
+                while (gameManager.N_salas + gameManager.N_salas - 2 < 2*n +temporal_doors - isFirstOneDoor)
                 {
-                    n = r.Next(2, gameManager.N_salas - roomsOneDoor+1);
+                    n -= 1;
+                    n = r.Next(2, n);
                 }
 
                 if (n == 2)
@@ -246,7 +256,10 @@ public class DungeonLevel : MonoBehaviour {
 
         }
  
-  
+        for(int ind = 0; ind < map.Count; ind++)
+        {
+            roomsReferenced.Add(ind, new List<int>());
+        }
         loadLevel = !loadLevel;
         
     }
@@ -287,6 +300,7 @@ public class Room
     public bool isLast;
     public GameManager.Dungeon level;
     public int number;
+    public List<int> indexOfRooms = new List<int>();
 
 
     public Room(string n, int enem, int items, int door, bool first, bool last, GameManager.Dungeon l, int numberofroom)

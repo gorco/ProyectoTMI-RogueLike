@@ -15,7 +15,7 @@ public class EnemySpawn : MonoBehaviour {
 
 
     public void spawn()
-    {
+    {/*
         count = 0;
         bool[] spawns = new bool[spawnLocations.Length];
         for(int i = 0; i < spawns.Length; i ++)
@@ -47,7 +47,7 @@ public class EnemySpawn : MonoBehaviour {
         }
         for(int b = 0; b < spawns.Length;b++)
             spawns[b] = false;
-                    
+            */        
     }
 
 
