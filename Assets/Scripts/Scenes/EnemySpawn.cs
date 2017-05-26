@@ -15,7 +15,7 @@ public class EnemySpawn : MonoBehaviour {
 
 
     public void spawn()
-    {/*
+    {
         count = 0;
         bool[] spawns = new bool[spawnLocations.Length];
         for(int i = 0; i < spawns.Length; i ++)
@@ -23,7 +23,7 @@ public class EnemySpawn : MonoBehaviour {
         dungeon = GameObject.FindGameObjectWithTag("Room").GetComponent<DungeonLevel>();
         if (dungeon != null)
         {
-            while (count < dungeon.Actual.n_enemies)
+            while (count < dungeon.Actual.n_items)
             {
                 //temporal
                 System.Random r = new System.Random();
@@ -47,7 +47,7 @@ public class EnemySpawn : MonoBehaviour {
         }
         for(int b = 0; b < spawns.Length;b++)
             spawns[b] = false;
-            */        
+                    
     }
 
 

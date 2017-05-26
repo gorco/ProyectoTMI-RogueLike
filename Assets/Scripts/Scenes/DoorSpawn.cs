@@ -293,7 +293,7 @@ public class DoorSpawn : MonoBehaviour {
             chanchan = gameObject.GetComponent<EnemySpawn>();
             items = gameObject.GetComponent<ItemSpawn>();
             chanchan.spawn();
-//            items.spawn();
+            items.spawn();
             //inicializo las habitaciones libres sin puerta
             for (int b = 0; b < spawns.Length; b++)
                 spawns[b] = false;
@@ -352,6 +352,7 @@ public class DoorSpawn : MonoBehaviour {
                         doorToAppend3.place = 1;
                         break;
                 }
+                s = newDoor.thisroom;
                 spawns[newDoor.place] = true;//Marco como ocupada
                 newDoor.gameObject.SetActive(true);
                 level.doors[0] = newDoor;
@@ -399,11 +400,14 @@ public class DoorSpawn : MonoBehaviour {
             //elijo todos los indices de golpe
 
             theChoosens(isDoorCreated);
-
+            DoorData doorToAppend4 = new DoorData();
+            DoorData doorToAppend5 = new DoorData();
+            DoorData doorToAppend6 = new DoorData();
+            DoorData doorToAppend7 = new DoorData();
             //necesito crear el resto de puertas de la sala con n_doors
             foreach (int i in level.Actual.indexOfRooms)
             {
-                if(level.nameofpreviousroom != "room_"+i)//si no he hecho ya su puerta
+                if(level.nameofpreviousroom != "room_"+i )//si no he hecho ya su puerta
                 {
                     System.Random r = new System.Random();
                     int n = r.Next(0, 4);
@@ -422,10 +426,10 @@ public class DoorSpawn : MonoBehaviour {
                             newDoor.next_room = newIndex;//movida porque hay que poner el indice de actual.name
                             newDoor.place = n;
                             newDoor.enabled = true;
-                            doorToAppend.nameofnextroom = "room_" + newIndex;
-                            doorToAppend.thisroom = level.Actual.name;
-                            doorToAppend.next_room = newIndex;//movida porque hay que poner el indice de actual.name
-                            doorToAppend.place = n;
+                            doorToAppend4.nameofnextroom = "room_" + newIndex;
+                            doorToAppend4.thisroom = level.Actual.name;
+                            doorToAppend4.next_room = newIndex;//movida porque hay que poner el indice de actual.name
+                            doorToAppend4.place = n;
                             break;
                         case 1:
                             newDoor = level.transform.FindChild("DoorEast").gameObject.GetComponent<Door>();
@@ -434,10 +438,10 @@ public class DoorSpawn : MonoBehaviour {
                             newDoor.next_room = newIndex;//movida porque hay que poner el indice de actual.name
                             newDoor.place = n;
                             newDoor.enabled = true;
-                            doorToAppend1.nameofnextroom = "room_" + newIndex;
-                            doorToAppend1.thisroom = level.Actual.name;
-                            doorToAppend1.next_room = newIndex;//movida porque hay que poner el indice de actual.name
-                            doorToAppend1.place = n;
+                            doorToAppend5.nameofnextroom = "room_" + newIndex;
+                            doorToAppend5.thisroom = level.Actual.name;
+                            doorToAppend5.next_room = newIndex;//movida porque hay que poner el indice de actual.name
+                            doorToAppend5.place = n;
                             break;
                         case 2:
                             newDoor = level.transform.FindChild("DoorSouth").gameObject.GetComponent<Door>();
@@ -446,10 +450,10 @@ public class DoorSpawn : MonoBehaviour {
                             newDoor.next_room = newIndex;//movida porque hay que poner el indice de actual.name
                             newDoor.place = n;
                             newDoor.enabled = true;
-                            doorToAppend2.nameofnextroom = "room_" + newIndex;
-                            doorToAppend2.thisroom = level.Actual.name;
-                            doorToAppend2.next_room = newIndex;//movida porque hay que poner el indice de actual.name
-                            doorToAppend2.place = n;
+                            doorToAppend6.nameofnextroom = "room_" + newIndex;
+                            doorToAppend6.thisroom = level.Actual.name;
+                            doorToAppend6.next_room = newIndex;//movida porque hay que poner el indice de actual.name
+                            doorToAppend6.place = n;
                             break;
                         case 3:
                             //level.transform.FindChild("DoorWestEast").gameObject.SetActive(true);
@@ -459,10 +463,10 @@ public class DoorSpawn : MonoBehaviour {
                             newDoor.next_room = newIndex;//movida porque hay que poner el indice de actual.name
                             newDoor.place = n;
                             newDoor.enabled = true;
-                            doorToAppend3.nameofnextroom = "room_" + newIndex;
-                            doorToAppend3.thisroom = level.Actual.name;
-                            doorToAppend3.next_room = newIndex;//movida porque hay que poner el indice de actual.name
-                            doorToAppend3.place = n;
+                            doorToAppend7.nameofnextroom = "room_" + newIndex;
+                            doorToAppend7.thisroom = level.Actual.name;
+                            doorToAppend7.next_room = newIndex;//movida porque hay que poner el indice de actual.name
+                            doorToAppend7.place = n;
 
                             break;
                     }
@@ -470,14 +474,60 @@ public class DoorSpawn : MonoBehaviour {
                     newDoor.gameObject.SetActive(true);
                     place[n] = n;
                     spawns[n] = true;
-                    if (n == 0)
-                        createdDoors[n] = doorToAppend;
-                    else if (n == 1)
-                        createdDoors[n] = doorToAppend1;
-                    else if (n == 2)
-                        createdDoors[n] = doorToAppend2;
-                    else if (n == 3)
-                        createdDoors[n] = doorToAppend3;
+
+                    if (n == 0 && !createdDoors.Contains(doorToAppend4))
+                    {
+                        if(createdDoors[n] == null)
+                            createdDoors[n] = doorToAppend4;
+                        else
+                        {
+                            while(createdDoors[n] != null)
+                                n = r.Next(0, 4);
+                            doorToAppend4.place = n;
+                            createdDoors[n] = doorToAppend4;
+                        }
+                    }
+                        
+                    else if (n == 1 && !createdDoors.Contains(doorToAppend5))
+                    {
+                        if (createdDoors[n] == null)
+                            createdDoors[n] = doorToAppend5;
+                        else
+                        {
+                            while (createdDoors[n] != null)
+                                n = r.Next(0, 4);
+                            doorToAppend5.place = n;
+                            createdDoors[n] = doorToAppend5;
+                        }
+
+                    }
+                        
+                    else if (n == 2 && !createdDoors.Contains(doorToAppend6))
+                    {
+                        if (createdDoors[n] == null)
+                            createdDoors[n] = doorToAppend6;
+                        else
+                        {
+                            while (createdDoors[n] != null)
+                                n = r.Next(0, 4);
+                            doorToAppend6.place = n;
+                            createdDoors[n] = doorToAppend6;
+                        }
+
+                    }
+                    else if (n == 3 && !createdDoors.Contains(doorToAppend7))
+                    {
+                        if (createdDoors[n] == null)
+                            createdDoors[n] = doorToAppend7;
+                        else
+                        {
+                            while (createdDoors[n] != null)
+                                n = r.Next(0, 4);
+                            doorToAppend7.place = n;
+                            createdDoors[n] = doorToAppend7;
+                        }
+
+                    }
 
                     if (level == null)
                         level = gameObject.GetComponent<DungeonLevel>();
