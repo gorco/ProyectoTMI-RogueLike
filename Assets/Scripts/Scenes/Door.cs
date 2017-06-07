@@ -11,8 +11,9 @@ public class Door : MonoBehaviour {
     public bool exist;
     public bool entered = false;
     public int place;
+    float time = 0;
 
-	// Use this for initialization
+   // Use this for initialization
 	void Start () {
 		
 	}
@@ -37,12 +38,14 @@ public class Door : MonoBehaviour {
         Debug.Log("Entra player");
         if (coll.CompareTag("Player"))
         {
-            
+            coll.gameObject.GetComponent<HeroMovement>().StopMovement();
             GameObject.FindGameObjectWithTag("Room").GetComponent<DungeonLevel>().refreshRoom(place, nameofnextroom,gameObject.GetComponent<Door>());
-
+            
         } 
     }
-	// Update is called once per frame
-	void Update () {
+    // Update is called once per frame
+    void Update () {
+        
+
 	}
 }

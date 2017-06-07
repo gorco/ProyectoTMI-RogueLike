@@ -102,6 +102,10 @@ public class HeroMovement : MonoBehaviour {
 
     }
 
+    public void StopMovement()
+    {
+        GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+    }
     
 
     

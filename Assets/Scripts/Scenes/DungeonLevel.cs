@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 
+
 /// <summary>
 /// ////////////////////
 
@@ -30,10 +31,12 @@ public class DungeonLevel : MonoBehaviour {
     public RoomTree<string, bool> doorsSaved = new RoomTree<string, bool>();//guardo las salas con puertas guardadas
     public bool loadLevel = false;
     public int totalDoors = 0;
+    public bool isBossDefeated = false;
     public Door[] doors = new Door[4];
     GameObject room;
     int p;
     string nameofroom;
+    bool executed = false;
 
     public Room Actual
     {
@@ -46,6 +49,7 @@ public class DungeonLevel : MonoBehaviour {
             actual = value;
         }
     }
+    
 
     public void refreshRoom(int place, string name, Door door)
     {
@@ -95,22 +99,22 @@ public class DungeonLevel : MonoBehaviour {
         {
             case 0:
                 newPlayerPos = room.transform.FindChild("North");
-                newPlayerPos.position = new Vector2(room.transform.FindChild("North").position.x, room.transform.FindChild("North").position.y - 1f);
+                newPlayerPos.position = new Vector2(room.transform.FindChild("North").position.x, room.transform.FindChild("North").position.y - 0.25f);
 
                 break;
             case 1:
                 newPlayerPos = room.transform.FindChild("East");
-                newPlayerPos.position = new Vector2(room.transform.FindChild("East").position.x - 1f, room.transform.FindChild("East").position.y);
+                newPlayerPos.position = new Vector2(room.transform.FindChild("East").position.x - 0.25f, room.transform.FindChild("East").position.y);
 
                 break;
             case 2:
                 newPlayerPos = room.transform.FindChild("South");
-                newPlayerPos.position = new Vector2(room.transform.FindChild("South").position.x, room.transform.FindChild("South").position.y + 1f);
+                newPlayerPos.position = new Vector2(room.transform.FindChild("South").position.x, room.transform.FindChild("South").position.y + 0.25f);
 
                 break;
             case 3:
                 newPlayerPos = room.transform.FindChild("West");
-                newPlayerPos.position = new Vector2(room.transform.FindChild("West").position.x + 1f, room.transform.FindChild("East").position.y);
+                newPlayerPos.position = new Vector2(room.transform.FindChild("West").position.x + 0.25f, room.transform.FindChild("East").position.y);
 
                 break;
         }
@@ -156,15 +160,17 @@ public class DungeonLevel : MonoBehaviour {
         int doorsInMultipleRooms = 2;
         int roomsOneDoor = 2;
         int n_salascreadas = 0;
-        int max_doors = 0;
+        int max_doors = 5;
         int isFirstOneDoor = 0;
         totalDoors = gameManager.N_salas + gameManager.N_salas - 2;
         if (gameManager.currentLevel == GameManager.Dungeon.Tutorial)
-            max_doors = 4;
-        else if (gameManager.currentLevel == GameManager.Dungeon.Level1)
+            max_doors = 5;
+        else
+            max_doors += 1;
+/*        else if (gameManager.currentLevel == GameManager.Dungeon.Level1)
             max_doors = 3;
         else max_doors = 4;
-        while (temporal_doors < gameManager.N_salas+gameManager.N_salas - 2)
+*/      while (temporal_doors < gameManager.N_salas+gameManager.N_salas - 2)
         {   if(gameManager.N_salas - roomsOneDoor-n_salascreadas >0)
             {
                 System.Random r = new System.Random();
@@ -172,7 +178,7 @@ public class DungeonLevel : MonoBehaviour {
 
                 if (map.Count == 0)
                 {
-                    n = r.Next(1, max_doors + 1);
+                    n = r.Next(1, 5);
                     isFirstOneDoor =((n == 1) ? 1 : 0);
                 }
                     
@@ -180,12 +186,7 @@ public class DungeonLevel : MonoBehaviour {
                 if (n == 1)
                     roomsOneDoor -= 1;
                 if (n == previousN && (n + 1 <= max_doors)) n += 1;
-                /*  while ((n + temporal_doors) > gameManager.N_salas + gameManager.N_salas - 2)
-                  {
 
-                      n = r.Next(1, max_doors + 1);
-
-                  }*/
 
                 int enemies = r.Next(1, n_salascreadas + 1);
                 if (n > 2)
@@ -208,7 +209,7 @@ public class DungeonLevel : MonoBehaviour {
                         roomsOneDoor -= 1;
                     else if(n==4)
                         roomsOneDoor -= 2;
-                Room newRoom = new Room("room_" + map.Count, enemies, map.Count, n, (map.Count == 0) ? true : false, false, gameManager.currentLevel, map.Count);
+                Room newRoom = new Room("room_" + map.Count, enemies, map.Count, n, (map.Count == 0) ? true : false, ((map.Count + 1 == gameManager.N_salas)) ? true : false, gameManager.currentLevel, map.Count);
                 if (map.Count == 0)
                 {
                     actual = newRoom;
@@ -228,24 +229,13 @@ public class DungeonLevel : MonoBehaviour {
                 doorsInMultipleRooms += 1;
                 previousN = n;
             }
-            /*if ((temporal_doors > n_salas - n_salascreadas)||(actual.n_doors == 4 && gameManager.currentLevel == GameManager.Dungeon.Tutorial))
-            {//si una sala tiene mas de una puerta hay que añadir las salas restantes sin puerta(al menos una, por donde ha venido)              
-                System.Random r = new System.Random();
-                int enemies = r.Next(1, n_salascreadas);
 
-                Room newRoom = new Room("room_" + map.Count, enemies,map.Count, 1, (map.Count == 0) ? true : false, ((map.Count + 1 == gameManager.N_salas)) ? true : false, gameManager.currentLevel, map.Count);
-                oneDoorMap["room_" + map.Count] = newRoom;
-                map["room_" + map.Count] = newRoom;
-                temporal_doors += 1;
-                n_salascreadas += 1;
-                roomsOneDoor -= 1;
-            }*/
             else
             {
                 System.Random r = new System.Random();
                 int enemies = r.Next(1, n_salascreadas);
 
-                Room newRoom = new Room("room_" + map.Count, enemies, map.Count, 1, (map.Count == 0) ? true : false, ((map.Count + 1 == gameManager.N_salas)) ? true : false, gameManager.currentLevel, map.Count);
+                Room newRoom = new Room("room_" + map.Count, enemies, map.Count, 1, (map.Count == 0) ? true : false, ((map.Count +1 == gameManager.N_salas)) ? true : false, gameManager.currentLevel, map.Count);
                 oneDoorMap["room_" + map.Count] = newRoom;
                 map["room_" + map.Count] = newRoom;
                 temporal_doors += 1;
@@ -254,6 +244,7 @@ public class DungeonLevel : MonoBehaviour {
 
             }
 
+
         }
  
         for(int ind = 0; ind < map.Count; ind++)
@@ -261,7 +252,11 @@ public class DungeonLevel : MonoBehaviour {
             roomsReferenced.Add(ind, new List<int>());
         }
         loadLevel = !loadLevel;
-        
+
+        temporal_doors = 0;
+        n_salascreadas = 0;
+        roomsOneDoor = 0;
+        doorsInMultipleRooms = 0;
     }
 	// Update is called once per frame
 	void Update () {
@@ -276,7 +271,16 @@ public class DungeonLevel : MonoBehaviour {
 
             loadLevel = !loadLevel;
         }
- 
+        if(actual.isLast && !executed)
+        {
+            executed = true;
+            //isBossDefeated = true;
+
+
+            if (isBossDefeated)
+                GameObject.FindGameObjectWithTag("Teleport").GetComponent<CircleCollider2D>().enabled = true;
+                GameObject.FindGameObjectWithTag("Teleport").GetComponent<Teleport>().enabled = true;
+        }
             
 	}
 

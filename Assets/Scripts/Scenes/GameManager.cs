@@ -3,6 +3,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Xml;
+using System.Xml.XPath;
+using System.IO;
+using System.Linq;
 
 public class GameManager : MonoBehaviour {
 
@@ -23,6 +27,46 @@ public class GameManager : MonoBehaviour {
         generateDungeon();
 	}
 
+    public void changeLevel()
+    {
+
+
+        currentLevel++;
+        N_salas += 1;
+        if(currentDungeon == null)
+            currentDungeon = room.GetComponent<DungeonLevel>();
+        if (currentDungeon.map != null)
+        {
+            currentDungeon.map = new RoomTree<string, Room>();
+            currentDungeon.multipleDoorMap = new RoomTree<string, Room>();
+            currentDungeon.oneDoorMap = new RoomTree<string, Room>();
+            currentDungeon.doorsSaved = new RoomTree<string, bool>();
+            currentDungeon.prefabsInRoom = new RoomTree<string, GameObject[]>();
+            currentDungeon.ocupadas = new RoomTree<int, int>();//salas que ya tienen puertas, cuantas tienen ocupadas
+            currentDungeon.salasCreadas = new RoomTree<string, DoorData[]>();//guardo las salas crafteadas
+            currentDungeon.roomsReferenced = new RoomTree<int, List<int>>();//en la habitación K hay una lista del numero de cada habitacion
+        }
+        XmlDocument doc = new XmlDocument();
+        try
+        {
+            doc.Load(Application.dataPath + "/Scripts/Scenes/Nodes.xml");
+
+        }
+        catch (XmlException e)
+        {
+            throw new XmlException("Fallo en la lectura del fichero: ", e);
+        }
+        XmlNodeList nodos = doc.GetElementsByTagName("DoorsData");
+        for(int i = 0; i < nodos.Count; i++)
+        {
+            nodos[i].RemoveAll();
+        }
+        doc.Save(Application.dataPath + "/Scripts/Scenes/Nodes.xml");
+
+
+        currentDungeon.GenerateDungeon();
+    }
+
     private void generateDungeon()
     {
         if (newGame)
@@ -38,6 +82,7 @@ public class GameManager : MonoBehaviour {
 
     }
 
+    
     public int N_salas
     {
         get{
@@ -50,7 +95,7 @@ public class GameManager : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		switch(currentLevel)
+		/*switch(currentLevel)
         {
             case Dungeon.Tutorial:
                 n_salas = 5;
@@ -86,6 +131,6 @@ public class GameManager : MonoBehaviour {
                 n_salas = n_salas + 1;
                 break;
 
-        }
+        }*/
     }
 }

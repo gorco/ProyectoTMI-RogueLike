@@ -35,6 +35,29 @@ public class DoorSpawn : MonoBehaviour {
             countOfMultipleRoomsFilled = 1;
     }
 
+    public void deletingToLoadNextLevel()
+    {
+
+        XmlDocument doc = new XmlDocument();
+        try
+        {
+            doc.Load(Application.dataPath + "/Scripts/Scenes/Nodes.xml");
+
+        }
+        catch (XmlException e)
+        {
+            throw new XmlException("Fallo en la lectura del fichero: ", e);
+        }
+        doc.RemoveAll();
+        XmlNodeList nodos = doc.GetElementsByTagName("DoorData");
+        List<DoorData> newDoors = new List<DoorData>();
+        foreach (XmlElement nodo in nodos)
+        {
+                     
+
+        }
+    }
+
     public void saving(string nameofnextroom)
     {
         Door nuevo = null;
