@@ -16,6 +16,7 @@ public class HeroMovement : MonoBehaviour {
 	public Sprite left;
 
 	private SpriteRenderer sprite;
+    private Animator anim;
 
 	private int xDir = 1;
 	private int yDir = 1;
@@ -24,14 +25,16 @@ public class HeroMovement : MonoBehaviour {
     void Start () {
 		speed = 12;
 		sprite = GetComponent<SpriteRenderer>();
+        anim = GetComponent<Animator>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
         if (Input.GetAxis("Horizontal") < 0)//izda
         {
+            anim.SetTrigger("moveLeft");
 			//Debug.Log("izda");
-			sprite.sprite = left;
+			//sprite.sprite = left;
             //transform.Rotate(Vector3.back, -90);
             if (dir == 1)
 				weapon.transform.Rotate(Vector3.back, -90);
@@ -44,9 +47,10 @@ public class HeroMovement : MonoBehaviour {
 		}
         if (Input.GetAxis("Horizontal") > 0)//dcha
         {
-			//Debug.Log("dcha");
-			sprite.sprite = right;
-			if (dir == 1)
+            //Debug.Log("dcha");
+            //sprite.sprite = right;
+            anim.SetTrigger("moveRight");
+            if (dir == 1)
 				weapon.transform.Rotate(Vector3.back, 90);
             else if (dir == 2)
 				weapon.transform.Rotate(Vector3.back, -90);
@@ -58,7 +62,8 @@ public class HeroMovement : MonoBehaviour {
             
         if (Input.GetAxis("Vertical") > 0)//arriba
         {
-			sprite.sprite = up;
+            anim.SetTrigger("moveUp");
+			//sprite.sprite = up;
 			Quaternion newRot = transform.rotation;
             //Debug.Log(newRot);
             newRot.z = 0.0f;
@@ -70,9 +75,10 @@ public class HeroMovement : MonoBehaviour {
            
         if (Input.GetAxis("Vertical") < 0)//abajo
         {
-			sprite.sprite = down;
-			//Debug.Log("pabajo");
-			Quaternion newRot = transform.rotation;
+            anim.SetTrigger("moveDown");
+            //sprite.sprite = down;
+            //Debug.Log("pabajo");
+            Quaternion newRot = transform.rotation;
             //Debug.Log(newRot);
             newRot.z = 180.0f;
 			weapon.transform.rotation = newRot;
