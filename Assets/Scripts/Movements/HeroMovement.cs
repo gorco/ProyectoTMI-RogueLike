@@ -23,8 +23,8 @@ public class HeroMovement : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-		speed = 12;
-		sprite = GetComponent<SpriteRenderer>();
+        speed = 12;
+        sprite = GetComponent<SpriteRenderer>();
         anim = GetComponent<Animator>();
 	}
 	
@@ -86,7 +86,10 @@ public class HeroMovement : MonoBehaviour {
             dir = 2;
 			yDir = Mathf.FloorToInt(Input.GetAxis("Vertical"));
         }
-
+        if (Input.GetAxis("Vertical") == 0 && Input.GetAxis("Horizontal") == 0)
+        {
+            anim.SetTrigger("wait");
+        }
         transform.Translate(speed * Math.Abs(Input.GetAxis("Horizontal")) * Time.deltaTime * xDir, speed * Math.Abs(Input.GetAxis("Vertical"))*Time.deltaTime * yDir, 0);
         transform.Translate(speed * Math.Abs(Input.GetAxis("Horizontal")) * Time.deltaTime * xDir, speed * Math.Abs(Input.GetAxis("Vertical")) * Time.deltaTime * yDir, 0);
         
