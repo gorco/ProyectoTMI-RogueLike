@@ -40,7 +40,7 @@ public class BoomAttack : MonoBehaviour {
             }
             
             Debug.Log("Daño real: " + attack + "\n");
-            //Debug.Log("Vida: " + lifeH.life);
+            
         }
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -10,14 +11,14 @@ public class LifeEnemy : MonoBehaviour {
 	public float defense = 1;
 
     private Animator anim;
-    private Animation an;
+    
 
 	[SerializeField]
     private float life = 70.0f;
 
 	// Use this for initialization
 	void Start () {
-        an = GetComponentInParent<Animation>();
+        
         anim = GetComponentInParent<Animator>();
     }
 	
@@ -32,19 +33,30 @@ public class LifeEnemy : MonoBehaviour {
         if (life <= 0)
         {
             life = 0;
-            //.SetTrigger("die");
-            an.Play("die");
-            
-            if (this.transform.parent != null)
-                if (an.IsPlaying("die"))
-				    Destroy(this.transform.parent.gameObject);
-			else
-                if (an.IsPlaying("die"))
-				    Destroy(this.gameObject);
+            anim.SetTrigger("die");
+
+            //this.Invoke(3);
+           /* if (this.transform.parent != null)
+                this.Invoke();
+                Destroy(this.transform.parent.gameObject);
+            else
+                Destroy(this.gameObject);*/
 		}
 		
         Debug.Log("Vida enemigo: "+life);
     }
 
+    private void Invoke(object v1, int v2)
+    {
+        throw new NotImplementedException();
+    }
+
+    void destroyEnemy()
+    {
+        if (this.transform.parent != null)
+            Destroy(this.transform.parent.gameObject);
+        else
+            Destroy(this.gameObject);
+    }
     
 }
