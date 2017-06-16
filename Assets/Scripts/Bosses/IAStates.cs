@@ -5,13 +5,11 @@ using System.Collections;
 public abstract class IAStates
 {
 
-    public enum IABehaviour { IDLE, ATTACK, MOVE, HEALTH };
+    public enum IABehaviour { IDLE, ATTACK, ALT_ATTACK, MOVE, ALT_MOVE, HEALTH };
     public enum Conditions { LIFE, ENEMYNEAR,ENEMYWEAK, ENEMYHIT}
     protected ArrayList conditions;
     protected ArrayList states;
     protected IABehaviour currentState;
-   
-
 
    protected IAStates()
     {
@@ -49,8 +47,11 @@ public abstract class IAStates
 
     public abstract void StateTransition(IABehaviour state, Conditions cond);
 
-    
-    
+    public IABehaviour GetCurrentBehaviour()
+	{
+		return currentState;
+	}
+
 }
 
 
