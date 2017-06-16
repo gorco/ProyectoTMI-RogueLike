@@ -63,7 +63,7 @@ public class EnemyMovement : MonoBehaviour {
     {
         if (act.x < dest.x)
             anim.SetTrigger("derecha");
-        if (act.x > dest.y)
+        if (act.x > dest.x)
             anim.SetTrigger("izquierda");
         if (act.y < dest.y)
             anim.SetTrigger("arriba");
