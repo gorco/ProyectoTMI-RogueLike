@@ -43,9 +43,8 @@ public class EnemyMovement : MonoBehaviour {
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.CompareTag("HeroImage"))
+        if (collision.CompareTag("Player"))
         {
-            //Debug.Log("Lo veo");
            if (!final)
             {
                 endPoint.transform.position = player.position;
