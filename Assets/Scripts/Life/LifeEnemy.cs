@@ -40,8 +40,6 @@ public class LifeEnemy : MonoBehaviour {
         Debug.Log("Vida enemigo: "+life);
     }
 
-   
-
     private void destroyEnemy()
     {
         if (this.transform.parent != null)
@@ -50,4 +48,8 @@ public class LifeEnemy : MonoBehaviour {
             Destroy(this.gameObject);
     }
     
+	public float GetCurrentLife()
+	{
+		return life;
+	}
 }

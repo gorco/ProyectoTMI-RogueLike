@@ -7,18 +7,21 @@ public class SweepingAttack : MonoBehaviour {
 	private Quaternion targetRotation;
 	public GameObject player;
 
-	public bool doAltAttack = false;
-	public bool doAttack = true;
+	private bool doAltAttack = false;
+	private bool doAttack = true;
 
 	private float timeRotating = 0;
 
-	public float timeAttack = 2;
-	public float waitBAttack = 0;
+	private float waitBAttack = 0;
 
 	private Vector3 originalAngle;
 	private Vector3 originalPos;
 
-	CircleCollider2D rAttack; 
+	CircleCollider2D rAttack;
+
+	public float timeAttack = 2;
+	public int attackLc = 25;
+	public int altAttackLc = 15;
 
 	void Start()
 	{
@@ -34,10 +37,10 @@ public class SweepingAttack : MonoBehaviour {
 	void Update () {
 		if (Vector3.Distance(transform.position, player.transform.position) < rAttack.radius)
 		{
-			if (Random.Range(0, 100) > 85)
+			if (Random.Range(0, 100) > (100 - altAttackLc))
 			{
 				AltAttack();
-			} else if (Random.Range(0, 100) < 15)
+			} else if (Random.Range(0, 100) < attackLc)
 			{
 				Attack();
 			}
@@ -55,6 +58,7 @@ public class SweepingAttack : MonoBehaviour {
 			}
 		} else if(doAttack)
 		{
+			waitBAttack += Time.deltaTime;
 			Vector3 dir = player.transform.localPosition - transform.localPosition;
 
 			float angle = Mathf.Atan(dir.y/dir.x) * Mathf.Rad2Deg;
@@ -63,6 +67,11 @@ public class SweepingAttack : MonoBehaviour {
 				angle += 180;
 			}
 			transform.eulerAngles = new Vector3(0, 0, originalAngle.z+angle);
+			if(waitBAttack > 5)
+			{
+				StopAttack();
+				waitBAttack = 0;
+			}
 		}
 		
 	}
@@ -82,6 +91,7 @@ public class SweepingAttack : MonoBehaviour {
 	public void StopAttack()
 	{
 		doAltAttack = false;
+		doAttack = false;
 		transform.eulerAngles = originalAngle;
 	}
 }

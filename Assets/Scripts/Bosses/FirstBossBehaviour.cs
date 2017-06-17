@@ -4,26 +4,40 @@ using UnityEngine;
 
 public class FirstBossBehaviour : MonoBehaviour {
 
-    IAStates boss;
-    Rigidbody2D my_rg;
-    GameObject player;
-
-	public float timeAttack;
+    GameObject player;	
 	SweepingAttack weapon;
+
+	public float minDistance = 3;
+	public float timeAttack = 2;
+
+	private EnemyMovement movement;
+	private LifeEnemy life;
 
     // Use this for initialization
 	void Start () {
-		boss = new FirstBoss();
-		my_rg = gameObject.GetComponent<Rigidbody2D>();
         player = GameObject.FindGameObjectWithTag("Player");
 		weapon = GetComponentInChildren<SweepingAttack>();
+		movement = GetComponentInChildren<EnemyMovement>();
+		life = GetComponentInChildren<LifeEnemy>();
 		weapon.timeAttack = timeAttack;
 		weapon.player = player;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
+		if(Vector3.Distance(transform.position, player.transform.position) < minDistance)
+		{
+			movement.enabled = false;
+		} else
+		{
+			movement.enabled = true;
+		}
+
+		if(life.GetCurrentLife() < life.maxLife / 4)
+		{
+			weapon.attackLc = 25;
+			weapon.altAttackLc = 35;
+		}
 
 	}
 
