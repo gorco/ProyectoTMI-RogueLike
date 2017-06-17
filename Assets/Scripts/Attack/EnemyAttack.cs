@@ -10,11 +10,13 @@ public class EnemyAttack : MonoBehaviour {
     public float speedAttack = 1.5f;
     private float timeAttack=0;
     private LifeHero lifeH;
+    private Animator anim;
     
 
     // Use this for initialization
     void Start () {
         lifeH = GameObject.FindGameObjectWithTag("Player").GetComponent<LifeHero>();
+        anim = GetComponentInParent<Animator>();
 	}
 	
 	// Update is called once per frame
@@ -35,6 +37,7 @@ public class EnemyAttack : MonoBehaviour {
             {
                 timeAttack = 0;
                 lifeH.receiveAttack(attack);
+                anim.SetTrigger("attack");
 				Debug.Log("Me han dañado. Ahora tengo " + lifeH);
             }
         }

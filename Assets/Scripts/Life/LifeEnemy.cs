@@ -34,24 +34,15 @@ public class LifeEnemy : MonoBehaviour {
         {
             life = 0;
             anim.SetTrigger("die");
-
-            //this.Invoke(3);
-           /* if (this.transform.parent != null)
-                this.Invoke();
-                Destroy(this.transform.parent.gameObject);
-            else
-                Destroy(this.gameObject);*/
+            Invoke("destroyEnemy", 0.5f);
 		}
 		
         Debug.Log("Vida enemigo: "+life);
     }
 
-    private void Invoke(object v1, int v2)
-    {
-        throw new NotImplementedException();
-    }
+   
 
-    void destroyEnemy()
+    private void destroyEnemy()
     {
         if (this.transform.parent != null)
             Destroy(this.transform.parent.gameObject);
