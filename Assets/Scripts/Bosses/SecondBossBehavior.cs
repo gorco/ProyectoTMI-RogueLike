@@ -13,7 +13,7 @@ public class SecondBossBehavior : MonoBehaviour
 	private LifeEnemy life;
 	private EnemyAttack melee;
 	private DistanceAttackEnemy distance;
-
+    private Animator anim;
 
 	// Use this for initialization
 	void Start()
@@ -26,6 +26,8 @@ public class SecondBossBehavior : MonoBehaviour
 
 		distance.recarga = 1.5f;
 		melee.speedAttack = 2f;
+
+        anim = GetComponent<Animator>();
 	}
 
 	// Update is called once per frame
@@ -34,12 +36,14 @@ public class SecondBossBehavior : MonoBehaviour
 		Debug.LogWarning(Vector3.Distance(transform.position, player.transform.position));
 		if (Vector3.Distance(transform.position, player.transform.position) < minDistance)
 		{
+            anim.SetTrigger("attack");
 			melee.enabled = true;
 			distance.enabled = false;
 		}
 		else
 		{
-			distance.enabled = true;
+            anim.SetTrigger("distancia");
+            distance.enabled = true;
 			melee.enabled = false;
 		}
 

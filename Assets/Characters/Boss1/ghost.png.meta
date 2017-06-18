@@ -1,6 +1,6 @@
 fileFormatVersion: 2
 guid: 1dc3e87e354347e4fb15253f63f3884e
-timeCreated: 1497735257
+timeCreated: 1497781166
 licenseType: Free
 TextureImporter:
   fileIDToRecycleName:
@@ -26,6 +26,10 @@ TextureImporter:
     21300038: ghost_19
     21300040: ghost_20
     21300042: ghost_21
+    21300044: ghost_22
+    21300046: ghost_23
+    21300048: ghost_24
+    21300050: ghost_25
   serializedVersion: 4
   mipmaps:
     mipMapMode: 0
@@ -249,6 +253,45 @@ TextureImporter:
       name: ghost_10
       rect:
         serializedVersion: 2
+        x: 120
+        y: 130
+        width: 45
+        height: 39
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ghost_11
+      rect:
+        serializedVersion: 2
+        x: 176
+        y: 133
+        width: 41
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ghost_12
+      rect:
+        serializedVersion: 2
+        x: 228
+        y: 133
+        width: 25
+        height: 44
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ghost_13
+      rect:
+        serializedVersion: 2
         x: 2
         y: 69
         width: 38
@@ -259,7 +302,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: ghost_11
+      name: ghost_14
       rect:
         serializedVersion: 2
         x: 46
@@ -272,7 +315,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: ghost_12
+      name: ghost_15
       rect:
         serializedVersion: 2
         x: 97
@@ -285,7 +328,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: ghost_13
+      name: ghost_16
       rect:
         serializedVersion: 2
         x: 143
@@ -298,7 +341,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: ghost_14
+      name: ghost_17
       rect:
         serializedVersion: 2
         x: 185
@@ -311,7 +354,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: ghost_15
+      name: ghost_18
       rect:
         serializedVersion: 2
         x: 231
@@ -324,7 +367,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: ghost_16
+      name: ghost_19
       rect:
         serializedVersion: 2
         x: 2
@@ -337,7 +380,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: ghost_17
+      name: ghost_20
       rect:
         serializedVersion: 2
         x: 38
@@ -350,7 +393,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: ghost_18
+      name: ghost_21
       rect:
         serializedVersion: 2
         x: 84
@@ -363,7 +406,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: ghost_19
+      name: ghost_22
       rect:
         serializedVersion: 2
         x: 134
@@ -376,7 +419,7 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: ghost_20
+      name: ghost_23
       rect:
         serializedVersion: 2
         x: 188
@@ -389,13 +432,26 @@ TextureImporter:
       outline: []
       tessellationDetail: 0
     - serializedVersion: 2
-      name: ghost_21
+      name: ghost_24
       rect:
         serializedVersion: 2
         x: 230
         y: 14
         width: 31
         height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      tessellationDetail: 0
+    - serializedVersion: 2
+      name: ghost_25
+      rect:
+        serializedVersion: 2
+        x: 0
+        y: 0
+        width: 64
+        height: 9
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}

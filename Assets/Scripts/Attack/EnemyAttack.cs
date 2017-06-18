@@ -38,6 +38,7 @@ public class EnemyAttack : MonoBehaviour {
                 timeAttack = 0;
                 lifeH.receiveAttack(attack);
                 anim.SetTrigger("attack");
+                new WaitForSeconds(1);
 				Debug.Log("Me han dañado. Ahora tengo " + lifeH);
             }
         }
