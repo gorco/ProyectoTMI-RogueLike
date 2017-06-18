@@ -5,7 +5,7 @@
 			"next": "options",
 			"fragments": [{
 				"tag": "Voz en off",
-				"character": "NPC",
+				"character": "T",
 				"msn": "Bienvenido, supongo que te preguntarás dónde estás y quién soy yo"
 			}]
 		},
@@ -21,24 +21,174 @@
 		},
 		"continue": {
 			"type": "dialog",
-			"next": "options",
 			"fragments": [
 			{
 				"tag": "Voz en off",
-				"character": "NPC",
+				"character": "T",
 				"msn": "Te he seleccionado como uno de los mejores sujetos, espero que no me falles"
 			},
 			{
 				"tag": "Voz en off",
-				"character": "NPC",
+				"character": "T",
 				"msn": "Pero no hay tiempo, de momento preocupate por avanzar en esta mazmorra"
 			},
 			{
 				"tag": "Voz en off",
-				"character": "NPC",
+				"character": "T",
 				"msn": "Poco a poco se irán desvelando los misterios, pero ahora mismo tengo que hacerme la comida"
 			}]
 		},
+	},
+	"npc2":{
+		"root": {
+			"type": "dialog",
+			"fragments": [{
+				"tag": "William",
+				"character": "NPC",
+				"msn": "¿Buscas algo?"
+			},
+			{
+				"tag": "William",
+				"character": "NPC",
+				"msn": "Ooh"
+			},
+			{
+				"tag": "William",
+				"character": "NPC",
+				"msn": "Así que quieres saber dónde estas..."
+			},
+			{
+				"tag": "William",
+				"character": "NPC",
+				"msn": "Te lo diría... pero no podemos pronunciar su nombre, llámalo hogar"
+			},{
+				"tag": "William",
+				"character": "NPC",
+				"msn": "Y si pretendes seguir avanzando, ten cuidado, muchos han muerto antes que tu en el intento de llegar a la superficie"
+			}]
+		},
+	},
+	"npc4":{
+		"root": {
+			"type": "dialog",
+			"fragments": [{
+				"tag": "Lin",
+				"character": "NPC",
+				"msn": "Son pocos los que pasan por aqui... espera, no me digas que 'T' te ha convencido para subir"
+			},
+			{
+				"tag": "Voz en off",
+				"character": "T",
+				"msn": "Eres un bocazas Lin, no hacia falta que le dijeras nada sobre mi, cierra la boca o te mandaré un regalo"
+			},
+			{
+				"tag": "T",
+				"character": "T",
+				"msn": "Bueno, supongo que tendré que contarte un poco sobre mí. Todos me llaman T."
+			},
+			{
+				"tag": "T",
+				"character": "T",
+				"msn": "Como nos llamaís desde ahí abajo, soy un ente de la superficie, de clase 3"
+			},
+			{
+				"tag": "T",
+				"character": "T",
+				"msn": "Que no sabes de que hablo o que es eso de clase 3, descubrelo!"
+			},
+			{
+				"tag": "T",
+				"character": "T",
+				"msn": "Venga, deja de olgazanear y sigue avanzando"
+			},
+			{
+				"tag": "Lin",
+				"character": "NPC",
+				"msn": "Ten cuidado, muchacho, todos los que siguen a T terminan muertos"
+			}
+		]}
+	},
+	"npc6":{
+		"root": {
+			"type": "dialog",
+			"fragments": [{
+				"tag": "Istgud",
+				"character": "NPC",
+				"msn": "Jajaja, que si se algo sobre los entes de la superficie"
+			},{
+				"tag": "Istgud",
+				"character": "NPC",
+				"msn": "Estás en el nivel 6 chico, no vas a encontrar ignorantes por aquí, claro que lo sé"
+			},{
+				"tag": "Istgud",
+				"character": "NPC",
+				"msn": "Los entes de la superficie son personas que viven fuera, al aire libre"
+			},{
+				"tag": "Istgud",
+				"character": "NPC",
+				"msn": "Según su poder en la sociedad se clasifican en clases de la 4 a la 1"
+			},{
+				"tag": "Istgud",
+				"character": "NPC",
+				"msn": "¿Que por qué ellos están fuera y nosotros dentro?¿Y que qué es este lugar?"
+			},{
+				"tag": "Istgud",
+				"character": "NPC",
+				"msn": "No puedo pegarme todo el día de cháchara, te contaré una cosa más y luego te vas"
+			},{
+				"tag": "Istgud",
+				"character": "NPC",
+				"msn": "Somos la manera que tienen de hacerse inmortales"
+			},{
+				"tag": "Istgud",
+				"character": "NPC",
+				"msn": "Los bichos que ves son los encargados de matarnos y llevarse nuestros cadáveres para sus máquinas de vida"
+			},{
+				"tag": "Istgud",
+				"character": "NPC",
+				"msn": "Ahora venga, largo de aquí."
+			}
+			
+		]}
+	},
+	"npc8":{
+		"root": {
+			"type": "dialog",
+			"fragments": [{
+				"tag": "Rolerio",
+				"character": "NPC",
+				"msn": "Así que buscas información sobre este lugar..."
+			}, {
+				"tag": "Rolerio",
+				"character": "NPC",
+				"msn": "Bien, te contaré algo, escucha antentamente"
+			}, {
+				"tag": "Rolerio",
+				"character": "NPC",
+				"msn": "Todos nosotros nacemos y nos criamos en el nivel Omega, no recuerdo cómo es ese lugar"
+			}, {
+				"tag": "Rolerio",
+				"character": "NPC",
+				"msn": "pero allí están nuestras familias"
+			}, {
+				"tag": "Rolerio",
+				"character": "NPC",
+				"msn": "Una vez a la semana se llevan unos cuantos, les borran la memoria y les sueltan en el piso del que vienes"
+			}, {
+				"tag": "Rolerio",
+				"character": "NPC",
+				"msn": "Por qué nadie en el nivel Omega lo impide es algo que no sé"
+			}, {
+				"tag": "Rolerio",
+				"character": "NPC",
+				"msn": "Pero te diré otra cosa, sobre T, algunos dicen que es nuestro salvador y que busca la manera de sacarnos"
+			},{
+				"tag": "Rolerio",
+				"character": "NPC",
+				"msn": "Otros que simplemente elige a alguien para ver como intenta salir y así no aburrirse"
+			}
+			
+		]}
 	},
 	"npc":{
 		"root":{
