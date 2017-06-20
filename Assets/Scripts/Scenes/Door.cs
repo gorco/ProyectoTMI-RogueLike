@@ -13,9 +13,11 @@ public class Door : MonoBehaviour {
     public int place;
     float time = 0;
 
+    private Animation anim;
+
    // Use this for initialization
 	void Start () {
-		
+        anim = GetComponent<Animation>();	
 	}
 
    
@@ -48,4 +50,5 @@ public class Door : MonoBehaviour {
         
 
 	}
+
 }

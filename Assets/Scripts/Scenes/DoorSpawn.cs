@@ -31,11 +31,15 @@ public class DoorSpawn : MonoBehaviour {
     ItemSpawn items;
     int countOfMultipleRoomsFilled = 0;
 
+
     bool[] spawns = { false, false, false, false };//puertas activadas
+
+    private Animator anim;
 
     // Use this for initialization
     void Start()
     {
+        anim = GetComponent<Animator>();
         level = gameObject.GetComponent<DungeonLevel>();
         if(level.multipleDoorMap.ContainsKey("room_"+0))
             countOfMultipleRoomsFilled = 1;
@@ -986,7 +990,7 @@ internal void selectDoor(int num_doors, Door door, int number)
         if(level.Actual.n_enemies > 0)
             foreach(GameObject g in GameObject.FindGameObjectsWithTag("Door"))
             {
-                
+                g.GetComponent<Animator>().SetTrigger("close");
                 g.GetComponent<BoxCollider2D>().enabled = false;
             }
 
@@ -994,7 +998,9 @@ internal void selectDoor(int num_doors, Door door, int number)
         {
             foreach (GameObject g in GameObject.FindGameObjectsWithTag("Door"))
             {
-                g.GetComponent<Animation>().Play("doors");
+                //anim.SetTrigger("open");
+               
+                g.GetComponent<Animator>().SetTrigger("open");
                 g.GetComponent<BoxCollider2D>().enabled = true;
             }
 
