@@ -46,6 +46,7 @@ public class LifeEnemy : MonoBehaviour {
             Destroy(this.transform.parent.gameObject);
         else
             Destroy(this.gameObject);
+        GameObject.FindGameObjectWithTag("Room").GetComponent<DungeonLevel>().Actual.n_enemies--;
     }
     
 	public float GetCurrentLife()

@@ -12,7 +12,13 @@ public class DoorSpawn : MonoBehaviour {
     int[] place = new int[4];
     int isDoorCreated = 0;
     string s;
+    [SerializeField]
+    GameObject[] boss;
+    [SerializeField]
+    GameObject spawnLocation;
+    GameObject whatSpawnClone;
     public Transform[] spawnLocations;
+    NpcSpawn npc;
     [SerializeField]
     Door newDoor;
     DoorData doorToAppend = new DoorData();
@@ -229,7 +235,7 @@ public class DoorSpawn : MonoBehaviour {
                     switch (d.place)
                     {
                         case 0:
-                            newDoor = level.transform.FindChild("DoorNorth").gameObject.GetComponent<Door>();
+                            newDoor = level.transform.Find("DoorNorth").gameObject.GetComponent<Door>();
                             newDoor.nameofnextroom = d.nameofnextroom;
                             newDoor.thisroom = d.thisroom;
                             newDoor.next_room = d.next_room;//movida porque hay que poner el indice de actual.name
@@ -241,7 +247,7 @@ public class DoorSpawn : MonoBehaviour {
                             //newDoor.enabled = true;
                             break;
                         case 1:
-                            newDoor = level.transform.FindChild("DoorEast").gameObject.GetComponent<Door>();
+                            newDoor = level.transform.Find("DoorEast").gameObject.GetComponent<Door>();
                             newDoor.nameofnextroom = d.nameofnextroom;
                             newDoor.thisroom = d.thisroom;
                             newDoor.next_room = d.next_room;//movida porque hay que poner el indice de actual.name
@@ -254,7 +260,7 @@ public class DoorSpawn : MonoBehaviour {
                             //newDoor.enabled = true;
                             break;
                         case 2:
-                            newDoor = level.transform.FindChild("DoorSouth").gameObject.GetComponent<Door>();
+                            newDoor = level.transform.Find("DoorSouth").gameObject.GetComponent<Door>();
                             newDoor.nameofnextroom = d.nameofnextroom;
                             newDoor.thisroom = d.thisroom;
                             newDoor.next_room = d.next_room;//movida porque hay que poner el indice de actual.name
@@ -267,7 +273,7 @@ public class DoorSpawn : MonoBehaviour {
                             //newDoor.enabled = true;
                             break;
                         case 3:
-                            newDoor = level.transform.FindChild("DoorWest").gameObject.GetComponent<Door>();
+                            newDoor = level.transform.Find("DoorWest").gameObject.GetComponent<Door>();
 
                             newDoor.nameofnextroom = d.nameofnextroom;
                             newDoor.thisroom = d.thisroom;
@@ -315,9 +321,17 @@ public class DoorSpawn : MonoBehaviour {
             //meto los objetos/enemigos
             chanchan = gameObject.GetComponent<EnemySpawn>();
             items = gameObject.GetComponent<ItemSpawn>();
-
+            npc = gameObject.GetComponent<NpcSpawn>();
+            if (level.Actual.npc > 0)
+                npc.spawn((int)GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().currentLevel + 1);
             chanchan.spawn();
             items.spawn();
+            if (level.Actual.isLast)
+            {
+                whatSpawnClone = Instantiate(boss[1], spawnLocation.transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;
+                whatSpawnClone.SetActive(true);
+
+            }
 
             //inicializo las habitaciones libres sin puerta
             for (int b = 0; b < spawns.Length; b++)
@@ -329,7 +343,7 @@ public class DoorSpawn : MonoBehaviour {
                 switch (door.place)
                 {
                     case 0:
-                        newDoor = level.transform.FindChild("DoorSouth").gameObject.GetComponent<Door>();
+                        newDoor = level.transform.Find("DoorSouth").gameObject.GetComponent<Door>();
                         newDoor.nameofnextroom = level.nameofpreviousroom;
                         newDoor.thisroom = level.Actual.name;
                         newDoor.next_room = number;//movida porque hay que poner el indice de actual.name
@@ -341,7 +355,7 @@ public class DoorSpawn : MonoBehaviour {
                         doorToAppend.place = 2;
                         break;
                     case 1:
-                        newDoor = level.transform.FindChild("DoorWest").gameObject.GetComponent<Door>();
+                        newDoor = level.transform.Find("DoorWest").gameObject.GetComponent<Door>();
                         newDoor.nameofnextroom = level.nameofpreviousroom;
                         newDoor.thisroom = level.Actual.name;
                         newDoor.next_room = number;//movida porque hay que poner el indice de actual.name
@@ -353,7 +367,7 @@ public class DoorSpawn : MonoBehaviour {
                         doorToAppend1.place = 3;
                         break;
                     case 2:
-                        newDoor = level.transform.FindChild("DoorNorth").gameObject.GetComponent<Door>();
+                        newDoor = level.transform.Find("DoorNorth").gameObject.GetComponent<Door>();
                         newDoor.nameofnextroom = level.nameofpreviousroom;
                         newDoor.thisroom = level.Actual.name;
                         newDoor.next_room = number;//movida porque hay que poner el indice de actual.name
@@ -365,7 +379,7 @@ public class DoorSpawn : MonoBehaviour {
                         doorToAppend2.place = 0;
                         break;
                     case 3:
-                        newDoor = level.transform.FindChild("DoorEast").gameObject.GetComponent<Door>();
+                        newDoor = level.transform.Find("DoorEast").gameObject.GetComponent<Door>();
                         newDoor.nameofnextroom = level.nameofpreviousroom;
                         newDoor.thisroom = level.Actual.name;
                         newDoor.next_room = number;//movida porque hay que poner el indice de actual.name
@@ -445,7 +459,7 @@ public class DoorSpawn : MonoBehaviour {
                     switch (n)
                     {
                         case 0:
-                            newDoor = level.transform.FindChild("DoorNorth").gameObject.GetComponent<Door>();
+                            newDoor = level.transform.Find("DoorNorth").gameObject.GetComponent<Door>();
                             newDoor.nameofnextroom = "room_" + newIndex;
                             newDoor.thisroom = level.Actual.name;
                             newDoor.next_room = newIndex;//movida porque hay que poner el indice de actual.name
@@ -457,7 +471,7 @@ public class DoorSpawn : MonoBehaviour {
                             doorToAppend4.place = n;
                             break;
                         case 1:
-                            newDoor = level.transform.FindChild("DoorEast").gameObject.GetComponent<Door>();
+                            newDoor = level.transform.Find("DoorEast").gameObject.GetComponent<Door>();
                             newDoor.nameofnextroom = "room_" + newIndex;
                             newDoor.thisroom = level.Actual.name;
                             newDoor.next_room = newIndex;//movida porque hay que poner el indice de actual.name
@@ -469,7 +483,7 @@ public class DoorSpawn : MonoBehaviour {
                             doorToAppend5.place = n;
                             break;
                         case 2:
-                            newDoor = level.transform.FindChild("DoorSouth").gameObject.GetComponent<Door>();
+                            newDoor = level.transform.Find("DoorSouth").gameObject.GetComponent<Door>();
                             newDoor.nameofnextroom = "room_" + newIndex;
                             newDoor.thisroom = level.Actual.name;
                             newDoor.next_room = newIndex;//movida porque hay que poner el indice de actual.name
@@ -482,7 +496,7 @@ public class DoorSpawn : MonoBehaviour {
                             break;
                         case 3:
                             //level.transform.FindChild("DoorWestEast").gameObject.SetActive(true);
-                            newDoor = level.transform.FindChild("DoorWest").gameObject.GetComponent<Door>();
+                            newDoor = level.transform.Find("DoorWest").gameObject.GetComponent<Door>();
                             newDoor.nameofnextroom = "room_" + newIndex;
                             newDoor.thisroom = level.Actual.name;
                             newDoor.next_room = newIndex;//movida porque hay que poner el indice de actual.name
@@ -969,6 +983,23 @@ internal void selectDoor(int num_doors, Door door, int number)
     // Update is called once per frame
     void Update()
     {
-       
+        if(level.Actual.n_enemies > 0)
+            foreach(GameObject g in GameObject.FindGameObjectsWithTag("Door"))
+            {
+                
+                g.GetComponent<BoxCollider2D>().enabled = false;
+            }
+
+        if (level.Actual.n_enemies == 0)
+        {
+            foreach (GameObject g in GameObject.FindGameObjectsWithTag("Door"))
+            {
+                g.GetComponent<Animation>().Play("doors");
+                g.GetComponent<BoxCollider2D>().enabled = true;
+            }
+
+        }
+
+
     }
 }

@@ -45,8 +45,8 @@ public class EnemySpawn : MonoBehaviour {
 					whatSpawnClone = Instantiate(whatSpawnPrefab[j], spawnLocations[n].transform.position, Quaternion.Euler(0, 0, 0)) as GameObject;
 					if (whatSpawnClone.GetComponent<EnemyMovement>() != null)
 					{
-						whatSpawnClone.GetComponent<EnemyMovement>().startPoint = spawnLocations[n].transform.FindChild("waypoint0").gameObject;
-						whatSpawnClone.GetComponent<EnemyMovement>().endPoint = spawnLocations[n].transform.FindChild("waypoint1").gameObject;
+						whatSpawnClone.GetComponent<EnemyMovement>().startPoint = spawnLocations[n].transform.Find("waypoint0").gameObject;
+						whatSpawnClone.GetComponent<EnemyMovement>().endPoint = spawnLocations[n].transform.Find("waypoint1").gameObject;
 					}
 					whatSpawnClone.SetActive(true);
 					

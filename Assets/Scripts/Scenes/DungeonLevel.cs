@@ -98,23 +98,23 @@ public class DungeonLevel : MonoBehaviour {
         switch (p)
         {
             case 0:
-                newPlayerPos = room.transform.FindChild("North");
-                newPlayerPos.position = new Vector2(room.transform.FindChild("North").position.x, room.transform.FindChild("North").position.y - 0.25f);
+                newPlayerPos = room.transform.Find("North");
+                newPlayerPos.position = new Vector2(room.transform.Find("North").position.x, room.transform.Find("North").position.y - 0.25f);
 
                 break;
             case 1:
-                newPlayerPos = room.transform.FindChild("East");
-                newPlayerPos.position = new Vector2(room.transform.FindChild("East").position.x - 0.25f, room.transform.FindChild("East").position.y);
+                newPlayerPos = room.transform.Find("East");
+                newPlayerPos.position = new Vector2(room.transform.Find("East").position.x - 0.25f, room.transform.Find("East").position.y);
 
                 break;
             case 2:
-                newPlayerPos = room.transform.FindChild("South");
-                newPlayerPos.position = new Vector2(room.transform.FindChild("South").position.x, room.transform.FindChild("South").position.y + 0.25f);
+                newPlayerPos = room.transform.Find("South");
+                newPlayerPos.position = new Vector2(room.transform.Find("South").position.x, room.transform.Find("South").position.y + 0.25f);
 
                 break;
             case 3:
-                newPlayerPos = room.transform.FindChild("West");
-                newPlayerPos.position = new Vector2(room.transform.FindChild("West").position.x + 0.25f, room.transform.FindChild("East").position.y);
+                newPlayerPos = room.transform.Find("West");
+                newPlayerPos.position = new Vector2(room.transform.Find("West").position.x + 0.25f, room.transform.Find("East").position.y);
 
                 break;
         }
@@ -209,7 +209,7 @@ public class DungeonLevel : MonoBehaviour {
                         roomsOneDoor -= 1;
                     else if(n==4)
                         roomsOneDoor -= 2;
-                Room newRoom = new Room("room_" + map.Count, enemies, map.Count, n, (map.Count == 0) ? true : false, ((map.Count + 1 == gameManager.N_salas)) ? true : false, gameManager.currentLevel, map.Count);
+                Room newRoom = new Room("room_" + map.Count, enemies, map.Count, n, (map.Count == 0) ? true : false, ((map.Count + 1 == gameManager.N_salas)) ? true : false, gameManager.currentLevel, map.Count, (map.Count == 0 && (int)gameManager.currentLevel % 2 !=0) ? 1 : 0);
                 if (map.Count == 0)
                 {
                     actual = newRoom;
@@ -218,6 +218,7 @@ public class DungeonLevel : MonoBehaviour {
                     actual.n_doors = n;
                     actual.level = gameManager.currentLevel;
                     actual.number = 0;
+                    actual.npc = newRoom.npc;
                 }
                 if (n == 1)//si solo tiene una puerta
                     oneDoorMap["room_" + map.Count] = newRoom;
@@ -235,7 +236,7 @@ public class DungeonLevel : MonoBehaviour {
                 System.Random r = new System.Random();
                 int enemies = r.Next(1, n_salascreadas);
 
-                Room newRoom = new Room("room_" + map.Count, enemies, map.Count, 1, (map.Count == 0) ? true : false, ((map.Count +1 == gameManager.N_salas)) ? true : false, gameManager.currentLevel, map.Count);
+                Room newRoom = new Room("room_" + map.Count, enemies, map.Count, 1, (map.Count == 0) ? true : false, ((map.Count +1 == gameManager.N_salas)) ? true : false, gameManager.currentLevel, map.Count, (map.Count == 0 && (int)gameManager.currentLevel % 2 != 0) ? 1 : 0);
                 oneDoorMap["room_" + map.Count] = newRoom;
                 map["room_" + map.Count] = newRoom;
                 temporal_doors += 1;
@@ -304,10 +305,11 @@ public class Room
     public bool isLast;
     public GameManager.Dungeon level;
     public int number;
+    public int npc;
     public List<int> indexOfRooms = new List<int>();
 
 
-    public Room(string n, int enem, int items, int door, bool first, bool last, GameManager.Dungeon l, int numberofroom)
+    public Room(string n, int enem, int items, int door, bool first, bool last, GameManager.Dungeon l, int numberofroom, int newnpc)
     {
         name = n;
         n_enemies = enem;
@@ -317,6 +319,7 @@ public class Room
         isLast = last;
         level = l;
         number = numberofroom;
+        npc = newnpc;
     }
 
     public int Number()
