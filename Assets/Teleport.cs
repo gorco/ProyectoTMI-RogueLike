@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -13,4 +14,13 @@ public class Teleport : MonoBehaviour {
 	void Update () {
 		
 	}
+    void OnTriggerEnter2D(Collider2D coll)
+    {
+        if (coll.CompareTag("Player"))
+        {
+            GameObject.FindGameObjectWithTag("GameManager").GetComponent<GameManager>().changeLevel();
+            this.enabled = false;
+            gameObject.GetComponent<CircleCollider2D>().enabled = false;
+        }
+    }
 }

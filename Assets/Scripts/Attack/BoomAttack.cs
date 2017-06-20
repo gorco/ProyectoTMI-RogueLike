@@ -4,42 +4,46 @@ using UnityEngine;
 
 public class BoomAttack : MonoBehaviour {
 
-    public float danio = 30;
+    public int attack = 30;
     public string tipo = "normal"; //Valores: {"boom","muerte"}
-                                    //boom: quita danio
-                                    //muerte: mata al heroe
-    LifeHero lifeH;
+								   //boom: quita danio
+								   //muerte: mata al heroe
+	private LifeHero lifeH;
 
 
     // Use this for initialization
     void Start()
     {
-        lifeH = new LifeHero();
-    }
+        lifeH = GameObject.FindGameObjectWithTag("Player").GetComponent<LifeHero>();
+	}
 
-    // Update is called once per frame
-    void Update () {
-		
+	// Update is called once per frame
+	void Update () {
+		if(lifeH == null)
+			lifeH = GameObject.FindGameObjectWithTag("Player").GetComponent<LifeHero>();
 	}
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        if (collision.CompareTag("HeroImage"))
+        if (collision.CompareTag("Player"))
         {
            // Debug.Log("Vida antes: " + lifeH.life);
-            if (tipo == "muerte")
+            if (tipo == "kill")
             {
-                lifeH.quitaVida(99999);
-                Destroy(gameObject);
+                lifeH.receiveAttack(99999);
             }
-            else if (tipo == "boom")
+            else
             {
-                lifeH.quitaVida(danio);
-                Destroy(gameObject);
+                lifeH.receiveAttack(attack);
             }
+
+			if (this.transform.parent != null)
+				Destroy(this.transform.parent.gameObject);
+			else
+				Destroy(this.gameObject);
+
+			Debug.Log("Daño real: " + attack + "\n");
             
-            Debug.Log("Daño real: " + danio + "\n");
-            //Debug.Log("Vida: " + lifeH.life);
         }
     }
 }

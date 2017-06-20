@@ -1,20 +1,60 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LifeHero : MonoBehaviour {
 
-    public float maxLife = 100.0f;
-    private float life;
-    public float defensa = 0;
-    GameObject h;
+	public int baseMaxLife = 100;
+	public int baseCurrentLife = 100;
+	public int baseAttack = 20;
+	public float baseSpdAttack = 2;
+	public int baseDefense = 5;
+	public float baseLuck = 0;
+	public float baseWeight = 0;
+
+	[SerializeField]
+	private int maxLife;
+	[SerializeField]
+	private int currentLife;
+
+	internal int getCurrentLife()
+	{
+		return currentLife;
+	}
+	[SerializeField]
+	private int attack;
+	[SerializeField]
+	private float spdAttack;
+	[SerializeField]
+	private int defense;
+	[SerializeField]
+	private float luck;
+	[SerializeField]
+	private float weight;
+
+	HeroAttack attackScript;
+	HeroMovement movement;
 
     // Use this for initialization
     void Start()
     {
-        h = GameObject.Find("Heroe");
-        life = maxLife;
-    }
+        this.currentLife = baseMaxLife;
+		this.maxLife = baseMaxLife;
+		this.attack = baseAttack;
+		this.spdAttack = baseSpdAttack;
+		this.defense = baseDefense;
+		this.luck = baseLuck;
+		this.weight = baseWeight;
+
+		attackScript = GetComponentInChildren<HeroAttack>();
+		attackScript.setAttack(this.attack);
+		attackScript.setSpeedAttack(this.spdAttack);
+
+		movement = GetComponent<HeroMovement>();
+		movement.setSpeedfromPeso(this.weight);
+	}
 
     // Update is called once per frame
     void Update()
@@ -22,14 +62,56 @@ public class LifeHero : MonoBehaviour {
         
     }
 
-    public void quitaVida(float danio)
+	public void updateStats(int mLife, int atk, float spdAt, int def, float lck, float w, bool set = false)
+	{
+		if (set)
+		{
+			this.maxLife = mLife;
+			this.attack = atk;
+			this.spdAttack = spdAt;
+			this.defense = def;
+			this.luck = lck;
+			this.weight = w;
+		} else
+		{
+			this.maxLife = baseMaxLife + mLife;
+			this.attack = baseAttack + atk;
+			this.spdAttack = baseSpdAttack + spdAt;
+			this.defense = baseDefense + def;
+			this.luck = baseLuck + lck;
+			this.weight = baseWeight + w;
+		}
+		attackScript.setAttack(this.attack);
+		attackScript.setSpeedAttack(this.spdAttack);
+		movement.setSpeedfromPeso(this.weight);
+	}
+
+    public void receiveAttack(int attack)
     {
-        life -= danio;
-        if (life <= 0)
+        currentLife -= (attack - defense);
+        if (currentLife <= 0)
         {
-            life = 0;
-            Destroy(h);
+            currentLife = 0;
+			Invoke("GameOver", 1);
         }
-        Debug.Log("Vida heroe: "+life);
+        Debug.Log("Vida heroe: "+currentLife);
     }
+
+	public void ObtainLife(int life)
+	{
+		this.currentLife += life;
+		if (currentLife <= 0)
+		{
+			currentLife = 0;
+		}
+		if (currentLife > maxLife)
+		{
+			currentLife = maxLife;
+		}
+	}
+
+	public void GameOver()
+	{
+		SceneManager.LoadScene(3);
+	}
 }

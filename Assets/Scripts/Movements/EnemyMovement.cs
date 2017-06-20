@@ -13,15 +13,19 @@ public class EnemyMovement : MonoBehaviour {
 
     public float speed = 1.0F; //Velocidad de movimiento
 
+    private Animator anim;
+
     // Use this for initialization
     void Start () {
-        
+        player = GameObject.FindGameObjectWithTag("Player").transform;
+        anim = GetComponentInChildren <Animator> ();
 	}
 	
 	// Update is called once per frame
 	void Update () { 
         if (!final)
         {
+            cambiaAnimacion(transform.position, endPoint.transform.position);
             transform.position = Vector3.MoveTowards(transform.position, endPoint.transform.position, speed * Time.deltaTime);
             if (transform.position == endPoint.transform.position)
                 final = true;
@@ -29,6 +33,7 @@ public class EnemyMovement : MonoBehaviour {
         
         if (final)
         {
+            cambiaAnimacion(transform.position, startPoint.transform.position);
             transform.position = Vector3.MoveTowards(transform.position, startPoint.transform.position, speed * Time.deltaTime);
             if (transform.position == startPoint.transform.position)
                 final = false;
@@ -38,9 +43,8 @@ public class EnemyMovement : MonoBehaviour {
 
     private void OnTriggerStay2D(Collider2D collision)
     {
-        if (collision.CompareTag("HeroImage"))
+        if (collision.CompareTag("Player"))
         {
-            //Debug.Log("Lo veo");
            if (!final)
             {
                 endPoint.transform.position = player.position;
@@ -52,6 +56,20 @@ public class EnemyMovement : MonoBehaviour {
               
             }
         }
+    }
+
+    private void cambiaAnimacion(Vector3 act, Vector3 dest)
+    {
+        if (act.x < dest.x)
+            anim.SetTrigger("derecha");
+        if (act.x > dest.x)
+            anim.SetTrigger("izquierda");
+        if (act.y < dest.y)
+            anim.SetTrigger("arriba");
+        if (act.y > dest.y)
+            anim.SetTrigger("abajo");
+
+        
     }
 
 }

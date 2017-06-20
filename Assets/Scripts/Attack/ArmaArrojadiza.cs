@@ -4,46 +4,47 @@ using UnityEngine;
 
 public class ArmaArrojadiza : MonoBehaviour {
     public float velocidad = 5.0F;
-    private LifeHero lH;
-    public float danioArma = 3;
-    //public Transform player;
-    private EnemyDAtack eda;
-    Vector2 posIni;
 
+    private LifeHero heroLife;
+
+	[SerializeField]
+	private int weaponAttack = 0;
+    public float weaponModifier = 1;
+
+    private Vector2 posIni;
+	private Vector2 posEnd;
+	private Vector2 vector;
 
 	// Use this for initialization
 	void Start () {
+		GameObject player = GameObject.Find("Player");
+		heroLife = player.GetComponent<LifeHero>();
 
-        lH = new LifeHero();
-        eda = new EnemyDAtack();
-        posIni = transform.position;
+		this.posEnd = new Vector2(heroLife.transform.localPosition.x, heroLife.transform.localPosition.y);
+        posIni = transform.localPosition;
+
+		vector = posEnd - posIni;
+		this.GetComponent<Rigidbody2D>().velocity = vector.normalized * velocidad;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
+        
+    }
+	
+	private void OnTriggerEnter2D(Collider2D collision)
+	{
+		if (collision.gameObject.name == "Player" || collision.gameObject.tag == "muro")
+		{
+			if (collision.gameObject.tag == "Player")
+				heroLife.receiveAttack(weaponAttack);
+
+			Destroy(this.gameObject);
+		}
 	}
 
-    private void OnTriggerEnter2D(Collider2D collision)
+    public void setWaponAttack(float shooterAttack)
     {
-        if (collision.CompareTag("HeroImage"))
-        {
-            lH.quitaVida(danioArma);
-            
-            transform.position = posIni;
-            
-        }
-        
-
-    }
-
-    public void setDanioArma(float danArma)
-    {
-        danioArma = danArma;
-    }
-
-    public void setV(float v)
-    {
-        velocidad = v;
+		this.weaponAttack = Mathf.CeilToInt(shooterAttack * weaponModifier);
     }
 }

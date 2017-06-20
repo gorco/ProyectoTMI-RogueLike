@@ -4,38 +4,45 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class ThrowDialog : MonoBehaviour, IPointerClickHandler, IPointerDownHandler, IPointerUpHandler
+public class ThrowDialog : MonoBehaviour
 {
 
 	public string fieldName;
+	public bool throwAtStart = false;
+	private bool canTalk = false;
+	private bool talking = false;
 
 	// Use this for initialization
 	void Start () {
-		
+		if (throwAtStart)
+		{
+			ThrowDialogNow();
+		}
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		
+		if (!talking && Input.GetKeyDown(KeyCode.E) == true)
+		{
+			talking = true;
+			ThrowDialogNow();
+		}
 	}
 
-	public void OnPointerClick(PointerEventData eventData)
+	private void OnTriggerEnter2D(Collider2D collision)
 	{
-
+		canTalk = true;
 	}
 
-	public void OnPointerDown(PointerEventData eventData)
+	private void OnTriggerExit2D(Collider2D collision)
 	{
-
+		canTalk = false;
+		talking = false;
 	}
 
 	public void ThrowDialogNow()
 	{
+		talking = true;
 		GetComponentInParent<ObjectsWithDialogsManager>().startDialog(fieldName);
-	}
-
-	public void OnPointerUp(PointerEventData eventData)
-	{
-		ThrowDialogNow();
 	}
 }

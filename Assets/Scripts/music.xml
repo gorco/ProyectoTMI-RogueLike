@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+
+ <Nodos>
+
+     <fx nombre="hitLarva" tipo="hit" who="Player" />
+     <fx nombre="hitSlime" tipo="damage" who="Slime" />
+     <fx nombre="Larva" />
+     <fx nombre="Larva" />
+     <fx nombre="Larva" />
+     <music nombre="Musica Menu" />
+     <music nombre="FB Llamada Bosses V1" />
+     <music nombre="FB Musica gameplay v1" />
+     <music nombre="FB Battle Music v2" />
+
+
+ </Nodos>

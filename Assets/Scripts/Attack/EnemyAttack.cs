@@ -6,34 +6,40 @@ using UnityEngine;
 
 public class EnemyAttack : MonoBehaviour {
 
-    public float danioEnemy = 5;
-    public float vTimeAttack = 1.5f;
-    float timeAttack=0;
-    public LifeHero lifeH;
+    public int attack = 5;
+    public float speedAttack = 1.5f;
+    private float timeAttack=0;
+    private LifeHero lifeH;
+    private Animator anim;
     
 
     // Use this for initialization
     void Start () {
-        lifeH = new LifeHero();
+        lifeH = GameObject.FindGameObjectWithTag("Player").GetComponent<LifeHero>();
+        anim = GetComponentInParent<Animator>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        
-    }
+        if(lifeH == null)
+		{
+			lifeH = GameObject.FindGameObjectWithTag("Player").GetComponent<LifeHero>();
+		}
+		timeAttack += Time.deltaTime;
+	}
 
-    private void OnTriggerStay2D(Collider2D collision)
+	private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (collision.CompareTag("HeroImage"))
+		if (collision.gameObject.name == "Player")
         {
-            
-            timeAttack += Time.deltaTime;
-            if (timeAttack >= vTimeAttack)
+			Debug.LogWarning("Me han tocado");
+            if (timeAttack >= speedAttack)
             {
                 timeAttack = 0;
-                lifeH.quitaVida(danioEnemy);
-                //lifeH.life -= danioEnemy;
-               // Debug.Log("Me han dañado. Ahora tengo " + lifeH);
+                lifeH.receiveAttack(attack);
+                anim.SetTrigger("attack");
+                new WaitForSeconds(1);
+				Debug.Log("Me han dañado. Ahora tengo " + lifeH);
             }
         }
 
