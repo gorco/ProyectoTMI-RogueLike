@@ -31,15 +31,18 @@ public class BoomAttack : MonoBehaviour {
             if (tipo == "kill")
             {
                 lifeH.receiveAttack(99999);
-                Destroy(gameObject);
             }
             else
             {
                 lifeH.receiveAttack(attack);
-                Destroy(gameObject);
             }
-            
-            Debug.Log("Daño real: " + attack + "\n");
+
+			if (this.transform.parent != null)
+				Destroy(this.transform.parent.gameObject);
+			else
+				Destroy(this.gameObject);
+
+			Debug.Log("Daño real: " + attack + "\n");
             
         }
     }

@@ -18,7 +18,7 @@ public class EnemyMovement : MonoBehaviour {
     // Use this for initialization
     void Start () {
         player = GameObject.FindGameObjectWithTag("Player").transform;
-        anim = GetComponent <Animator> ();
+        anim = GetComponentInChildren <Animator> ();
 	}
 	
 	// Update is called once per frame

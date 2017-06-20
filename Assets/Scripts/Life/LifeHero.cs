@@ -2,6 +2,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class LifeHero : MonoBehaviour {
 
@@ -91,6 +92,7 @@ public class LifeHero : MonoBehaviour {
         if (currentLife <= 0)
         {
             currentLife = 0;
+			Invoke("GameOver", 1);
         }
         Debug.Log("Vida heroe: "+currentLife);
     }
@@ -106,5 +108,10 @@ public class LifeHero : MonoBehaviour {
 		{
 			currentLife = maxLife;
 		}
+	}
+
+	public void GameOver()
+	{
+		SceneManager.LoadScene(3);
 	}
 }

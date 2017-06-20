@@ -17,7 +17,7 @@ public class FirstBossBehaviour : MonoBehaviour {
 	void Start () {
         player = GameObject.FindGameObjectWithTag("Player");
 		weapon = GetComponentInChildren<SweepingAttack>();
-		movement = GetComponentInChildren<EnemyMovement>();
+		movement = GetComponent<EnemyMovement>();
 		life = GetComponentInChildren<LifeEnemy>();
 		weapon.timeAttack = timeAttack;
 		weapon.player = player;
